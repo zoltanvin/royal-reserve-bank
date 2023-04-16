@@ -42,7 +42,7 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 # Clone And Use 🔨
 
 Prerequisites
-- Make sure you have Java 17, MongoDB, Maven, Spring Boot, Spring Cloud, Kibana and a compatible IDE (e.g. IntelliJ IDEA, Eclipse) installed and configured.
+- Make sure you have Java 17, MongoDB, Docker, Maven, Spring Boot, Spring Cloud, Kibana and a compatible IDE (e.g. IntelliJ IDEA, Eclipse) installed and configured.
 
 How to run the application using Docker
 - Run `mvn clean package -DskipTests` to build the applications and create the docker image locally.
