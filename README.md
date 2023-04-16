@@ -36,7 +36,7 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 - API Gateway provides a single entry point for users to communicate with the microservices. It acts as a gatekeeper for sending requests from users to different services. This way, users do not have to directly communicate with the host names or IP addresses of the microservices.
 
 # Solution Architecture 🔍
-![screenshot](https://github.com/zoltanvin/mini-shopify/blob/main/assets/architecture.png)
+![screenshot](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
 
 
 # Clone And Use 🔨
