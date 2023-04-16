@@ -10,7 +10,7 @@
 <p align="center">
   <a href="#about-">About</a> •
   <a href="#microservices-">Microservices</a> •
-  <a href="#solution-architecture-">Solution Architecture</a> •
+  <a href="#solution-architecture-">Architecture</a> •
   <a href="#clone-and-use-">Clone And Use</a> •
   <a href="#technologies-used-">Technologies Used</a>
 </p>
