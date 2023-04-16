@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/zoltanvin/mini-shopify"><img src="https://github.com/zoltanvin/mini-shopify/blob/main/assets/logo.png" alt="Pac-Man Legacy" width="200"></a>
+  <a href="https://github.com/zoltanvin/mini-shopify"><img src="https://github.com/zoltanvin/mini-shopify/blob/main/assets/logo.png" alt="Mini Shopify" width="200"></a>
   <br>
   Mini Shopify
   <br>
