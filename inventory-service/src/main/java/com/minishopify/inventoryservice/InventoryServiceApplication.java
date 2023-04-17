@@ -10,18 +10,23 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class InventoryServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InventoryServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryServiceApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner loadData(InventoryRepository inventoryRepository){
-		return args -> {
-			Inventory inventory = new Inventory();
-			inventory.setSkuCode("George_Orwell:_1984");
-			inventory.setQuantity(0);
+    @Bean
+    public CommandLineRunner loadData(InventoryRepository inventoryRepository) {
+        return args -> {
+            Inventory inventory = new Inventory();
+            inventory.setSkuCode("George_Orwell:_1984");
+            inventory.setQuantity(10);
 
-			inventoryRepository.save(inventory);
-		};
-	}
+            Inventory inventory1 = new Inventory();
+            inventory1.setSkuCode("Harry_Potter_and_The_Half_Blood_Prince");
+            inventory1.setQuantity(0);
+
+            inventoryRepository.save(inventory);
+            inventoryRepository.save(inventory1);
+        };
+    }
 }
