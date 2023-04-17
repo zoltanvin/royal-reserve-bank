@@ -18,8 +18,8 @@ public class InventoryServiceApplication {
 	public CommandLineRunner loadData(InventoryRepository inventoryRepository){
 		return args -> {
 			Inventory inventory = new Inventory();
-			inventory.setSkuCode("George Orwell: 1984");
-			inventory.setQuantity(12);
+			inventory.setSkuCode("George_Orwell:_1984");
+			inventory.setQuantity(0);
 
 			inventoryRepository.save(inventory);
 		};
