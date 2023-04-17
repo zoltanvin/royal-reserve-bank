@@ -1,9 +1,8 @@
 package com.minishopify.productservice.service;
 
-import com.minishopify.productservice.dto.ProductRequest;
-//import com.minishopify.productservice.dto.ProductResponse;
 import com.minishopify.productservice.dto.ProductResponse;
 import com.minishopify.productservice.model.Product;
+import com.minishopify.productservice.dto.ProductRequest;
 import com.minishopify.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

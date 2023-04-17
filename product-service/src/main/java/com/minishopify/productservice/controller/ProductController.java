@@ -1,9 +1,8 @@
 package com.minishopify.productservice.controller;
 
-import com.minishopify.productservice.dto.ProductRequest;
-//import com.minishopify.productservice.dto.ProductResponse;
 import com.minishopify.productservice.dto.ProductResponse;
 import com.minishopify.productservice.service.ProductService;
+import com.minishopify.productservice.dto.ProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
