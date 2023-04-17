@@ -37,7 +37,7 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 
 # Solution Architecture 🔍
 
-![screenshot](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
+![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
 
 # Clone And Use 🔨
 
