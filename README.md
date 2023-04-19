@@ -27,17 +27,17 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 
 # Microservices 📋
 
-1. Product Service for creating and viewing products. It acts as a product catalog and it communicates with a MongoDB database.
-2. Order Service for ordering products. It communicates with a MySQL database.
-3. Inventory Service for checking if product is in stock or not. Also communicates with a MySQL database.
-4. Notification Service sends notifications after the order is places. It is stateless and does not have a database.
+1. Product API for creating and viewing products. It acts as a product catalog and it communicates with a MongoDB database.
+2. Order API for ordering products. It communicates with a MySQL database.
+3. Inventory API for checking if product is in stock or not. Also communicates with a MySQL database.
+4. Notification API sends notifications after the order is places. It is stateless and does not have a database.
 
-- The Order Service communicates with the Inventory Service and Product Service synchronously to check the availability of products before placing an order. It also communicates with the Notification Service asynchronously to send notifications after a successful order placement.
+- The Order API communicates with the Inventory API and Product API synchronously to check the availability of products before placing an order. It also communicates with the Notification API asynchronously to send notifications after a successful order placement.
 - API Gateway provides a single entry point for users to communicate with the microservices. It acts as a gatekeeper for sending requests from users to different services. This way, users do not have to directly communicate with the host names or IP addresses of the microservices.
 
 # Solution Architecture 🔍
 
-![screenshot](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
+![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
 
 # Clone And Use 🔨
 

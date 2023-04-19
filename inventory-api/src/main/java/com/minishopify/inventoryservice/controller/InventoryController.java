@@ -1,7 +1,7 @@
 package com.minishopify.inventoryservice.controller;
 
-import com.minishopify.inventoryservice.dto.InventoryResponse;
 import com.minishopify.inventoryservice.service.InventoryService;
+import com.minishopify.inventoryservice.dto.InventoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

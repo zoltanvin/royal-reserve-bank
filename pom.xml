@@ -16,9 +16,9 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>product-service</module>
-        <module>order-service</module>
-        <module>inventory-service</module>
+        <module>product-api</module>
+        <module>order-api</module>
+        <module>inventory-api</module>
     </modules>
 
     <properties>
