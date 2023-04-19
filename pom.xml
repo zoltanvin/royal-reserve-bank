@@ -19,7 +19,7 @@
         <module>product-api</module>
         <module>order-api</module>
         <module>inventory-api</module>
-        <module>discovery-server</module>
+        <module>discovery-server-api</module>
         <module>api-gateway</module>
     </modules>
 
