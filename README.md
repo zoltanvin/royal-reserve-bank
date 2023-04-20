@@ -27,17 +27,25 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 
 # Microservices 📋
 
-1. Product API for creating and viewing products. It acts as a product catalog and it communicates with a MongoDB database.
-2. Order API for ordering products. It communicates with a MySQL database.
-3. Inventory API for checking if product is in stock or not. Also communicates with a MySQL database.
-4. Notification API sends notifications after the order is places. It is stateless and does not have a database.
+1. **Product API** for creating and viewing products. It acts as a product catalog and it communicates with a MongoDB database.
+2. **Order API** for ordering products. It communicates with a MySQL database.
+3. **Inventory API** for checking if product is in stock or not. Also communicates with a MySQL database.
+4. **Notification API** sends notifications after the order is places. It is stateless and does not have a database.
+5. **API Gateway** provides a single entry point for users to communicate with the microservices. It acts as a gatekeeper for sending requests from users to different services. This way, users do not have to directly communicate with the host names or IP addresses of the microservices.
 
 - The Order API communicates with the Inventory API and Product API synchronously to check the availability of products before placing an order. It also communicates with the Notification API asynchronously to send notifications after a successful order placement.
-- API Gateway provides a single entry point for users to communicate with the microservices. It acts as a gatekeeper for sending requests from users to different services. This way, users do not have to directly communicate with the host names or IP addresses of the microservices.
 
 # Solution Architecture 🔍
 
 ![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
+
+
+<details>
+  <summary>More detail</summary>
+
+  ![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/logical_architecture.png)
+
+</details>
 
 # Clone And Use 🔨
 
@@ -66,6 +74,32 @@ To run the application without Docker:
 - **JPA:** for implementing the Object Relational Mapping in the microservices, allowing Java applications to interact with databases and perform CRUD.
 - **Docker:** for containerization of microservices, making it easy to package and deploy the microservices across different environments.
 - **Grafana:** for monitoring and logging the microservices, providing insights into the performance and health of the microservices.
+
+<details>
+  <summary>Notes for myself</summary>
+
+docker pull postgres
+docker run --name order-api -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=admin -d postgres
+
+docker pull mysql
+docker run --name inventory-api -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_USER=admin -d mysql
+
+docker exec -it inventory-api  mysql -uroot -p
+CREATE USER 'admin'@'172.17.0.1' IDENTIFIED BY 'pwd';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'172.17.0.1' WITH GRANT OPTION;
+flush privileges;
+exit
+
+docker pull container-registry.oracle.com/database/free
+docker run -d --name=inv-api -p 1521:1521 -e ORACLE_SID=oracle -e ORACLE_PWD=pwd container-registry.oracle.com/database/free
+-p 5500:5500
+
+docker pull mcr.microsoft.com/mssql/server
+docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PID=Developer" -p 1433:1433 -d mcr.microsoft.com/mssql/server
+docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PID=Developer" -e "MSSQL_USER=user" -e "MSSQL_PASSWORD=passworD!" -p 1433:1433 -d mcr.microsoft.com/mssql/server
+docker exec -it inv /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P passworD!
+GRANT CONTROL SERVER TO user
+</details>
 
 </br>
 ⭐ Star me on GitHub — it helps!
