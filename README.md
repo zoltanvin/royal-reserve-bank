@@ -99,6 +99,10 @@ docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PI
 docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PID=Developer" -e "MSSQL_USER=user" -e "MSSQL_PASSWORD=passworD!" -p 1433:1433 -d mcr.microsoft.com/mssql/server
 docker exec -it inv /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P passworD!
 GRANT CONTROL SERVER TO user
+
+docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.1.0 start-dev
+
+
 </details>
 
 </br>
