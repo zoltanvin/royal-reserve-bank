@@ -1,5 +1,6 @@
 package com.mini.shopify.order.api.service;
 
+import com.mini.shopify.order.api.client.InventoryClient;
 import com.mini.shopify.order.api.dto.InventoryResponse;
 import com.mini.shopify.order.api.dto.OrderLineItemsDto;
 import com.mini.shopify.order.api.dto.OrderRequest;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final InventoryClient inventoryClient;
     private final WebClient.Builder webClientBuilder;
 
     public String placeOrder(OrderRequest orderRequest) {
@@ -38,17 +40,11 @@ public class OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
-        InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
-                .uri("http://inventory-api/api/inventory",
-                        uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
-                .retrieve()
-                .bodyToMono(InventoryResponse[].class)
-                .block();
-
-        boolean allProductsInStock = Arrays.stream(inventoryResponseArray)
+        boolean allProductsInStock = inventoryClient.checkStock(skuCodes)
+                .stream()
                 .allMatch(InventoryResponse::isInStock);
 
-        if(allProductsInStock){
+        if (allProductsInStock) {
             orderRepository.save(order);
             return "Order Placed Successfully!";
         } else {
