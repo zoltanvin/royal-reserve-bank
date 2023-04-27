@@ -4,15 +4,15 @@ import com.mini.shopify.order.api.client.InventoryClient;
 import com.mini.shopify.order.api.dto.InventoryResponse;
 import com.mini.shopify.order.api.dto.OrderLineItemsDto;
 import com.mini.shopify.order.api.dto.OrderRequest;
+import com.mini.shopify.order.api.event.OrderPlacedEvent;
 import com.mini.shopify.order.api.model.Order;
 import com.mini.shopify.order.api.model.OrderLineItems;
 import com.mini.shopify.order.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final InventoryClient inventoryClient;
-    private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -46,6 +46,7 @@ public class OrderService {
 
         if (allProductsInStock) {
             orderRepository.save(order);
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
             return "Order Placed Successfully!";
         } else {
             throw new IllegalArgumentException("Product is not in stock, please try again later");
