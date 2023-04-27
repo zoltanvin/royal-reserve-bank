@@ -28,7 +28,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
         <testcontainers-bom.version>1.18.0</testcontainers-bom.version>
-
     </properties>
 
     <dependencyManagement>
