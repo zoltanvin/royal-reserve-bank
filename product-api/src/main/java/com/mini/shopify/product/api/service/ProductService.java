@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,23 @@ public class ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .build();
+    }
+
+    public void deleteProductByName(String productName) {
+        List<Product> products = productRepository.findAll();
+
+        Optional<Product> productToDelete = Optional.empty();
+        for (Product p : products) {
+            if (p.getName() != null && p.getName().equals(productName)) {
+                productToDelete = Optional.of(p);
+                break;
+            }
+        }
+
+        if (productToDelete.isPresent()) {
+            productRepository.delete(productToDelete.get());
+        } else {
+            throw new RuntimeException("Product with name \"" + productName + "\" not found.");
+        }
     }
 }

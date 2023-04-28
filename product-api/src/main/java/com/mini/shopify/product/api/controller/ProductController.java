@@ -5,6 +5,7 @@ import com.mini.shopify.product.api.dto.ProductResponse;
 import com.mini.shopify.product.api.dto.ProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +18,10 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<String> createProduct(@RequestBody ProductRequest productRequest) {
         productService.createProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Product created successfully: \"" +
+                productRequest.getName() + "\"");
     }
 
     @GetMapping
@@ -28,4 +30,14 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @DeleteMapping
+    public ResponseEntity<String> deleteProduct(@RequestBody ProductRequest productRequest) {
+        try {
+            productService.deleteProductByName(productRequest.getName());
+            return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully: \"" +
+                    productRequest.getName() + "\"");
+        } catch (RuntimeException runtimeException) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(runtimeException.getMessage());
+        }
+    }
 }

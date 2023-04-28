@@ -1,7 +1,6 @@
 package com.mini.shopify.inventory.api.service;
 
 import com.mini.shopify.inventory.api.dto.InventoryResponse;
-import com.mini.shopify.inventory.api.model.Inventory;
 import com.mini.shopify.inventory.api.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,19 +20,13 @@ public class InventoryService {
     @Transactional(readOnly = true)
     @SneakyThrows
     public List<InventoryResponse> isInStock(List<String> skuCode) {
-        //Use case of Circuit breaker: slow network connection
-        log.info("Wait");
-        //Thread.sleep(10000);
-        log.info("Wait ended");
+        log.info("Checking Inventory");
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
-                .map(this::mapInventoryAndThrowErrorIfBadluck)
-                .toList();
-    }
-
-    private InventoryResponse mapInventoryAndThrowErrorIfBadluck(Inventory inventory) {
-        return InventoryResponse.builder()
-                .skuCode(inventory.getSkuCode())
-                .isInStock(inventory.getQuantity() > 0)
-                .build();
+                .map(inventory ->
+                        InventoryResponse.builder()
+                                .skuCode(inventory.getSkuCode())
+                                .isInStock(inventory.getQuantity() > 0)
+                                .build()
+                ).toList();
     }
 }

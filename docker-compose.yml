@@ -1,24 +1,158 @@
-version: '3'
+version: "3.8"
 services:
-  zookeeper:
+#  api-gateway:
+#    image: 0145136798/api-gateway
+#    container_name: api-gateway
+#    pull_policy: always
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: TRACE
+#    depends_on:
+#      - zipkin
+#      - discovery-server
+#      - oidc-provider
+
+#  discovery-server:
+#    image: 0145136798/discovery-server
+#    container_name: discovery-server
+#    pull_policy: always
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on:
+#      - zipkin
+
+#  inventory-api:
+#    container_name: inventory-api
+#    image: 0145136798/inventory-api
+#    pull_policy: always
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://inventory-api-postgres:5432/inventory-api
+#    depends_on:
+#      - inventory-api-mysql
+#      - discovery-server
+#      - api-gateway
+
+  inventory-api-mysql:
+    container_name: inventory-api-mysql
+    image: mysql:8.0.33
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pwd
+      MYSQL_ROOT_PASSWORD: pwd
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./data/inventory-api-mysql:/data/mysql
+    restart: unless-stopped
+
+#  notification-api:
+#    container_name: notification-api
+#    image: 0145136798/notification-api
+#    pull_policy: always
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on:
+#      - zipkin
+#      - notification-api-kafka-broker
+#      - discovery-server
+#      - api-gateway
+
+  notification-api-kafka-zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2
-    container_name: zookeeper
+    container_name: notification-api-kafka-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  broker:
-    image: confluentinc/cp-kafka:7.3.2
-    container_name: broker
+  notification-api-kafka-broker:
+    image: confluentinc/cp-kafka:7.3.3
+    container_name: notification-api-kafka-broker
     ports:
       - "9092:9092"
     depends_on:
-      - zookeeper
+      - notification-api-kafka-zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ZOOKEEPER_CONNECT: 'notification-api-kafka-zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    restart: unless-stopped
+
+  oidc-provider:
+    image: 0145136798/oidc-provider
+    container_name: oidc-provider
+    ports:
+      - "8080:8080"
+    environment:
+      DB_VENDOR: h2
+      DB_ADDR: localhost
+      DB_DATABASE: db
+      DB_USER: username
+      DB_PASSWORD: password
+      JDBC_PARAMS: DB_CLOSE_DELAY=-1;MODE=MYSQL
+    restart: unless-stopped
+
+#  order-api:
+#    container_name: order-api
+#    image: 0145136798/order-api
+#    pull_policy: always
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://order-api-postgres:5432/order-api
+#    depends_on:
+#      - order-api-postgres
+#      - notification-api-kafka-broker
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#    ports:
+#      - "4000:4000"
+
+  order-api-postgres:
+    image: postgres:15.2
+    container_name: order-api-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./data/order-api-postgres:/data/postgres
+    restart: unless-stopped
+
+#  product-api:
+#    container_name: product-api
+#    image: 0145136798/product-api
+#    pull_policy: always
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on:
+#      - product-api-mongo
+#      - discovery-server
+#      - api-gateway
+
+  product-api-mongo:
+    image: mongo:6.0.5
+    container_name: product-api-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/product-api-mongo:/data/mongo
+    restart: unless-stopped
+
+  zipkin:
+    image: openzipkin/zipkin:2.24.0
+    container_name: zipkin
+    ports:
+      - "9411:9411"

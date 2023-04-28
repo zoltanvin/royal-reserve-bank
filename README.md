@@ -77,34 +77,34 @@ To run the application without Docker:
 
 <details>
   <summary>Notes for myself</summary>
+docker run --name product-api -p 27017:27017 mongo
 
-docker pull postgres
 docker run --name order-api -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=admin -d postgres
 
-docker pull mysql
 docker run --name inventory-api -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_USER=admin -d mysql
-
 docker exec -it inventory-api  mysql -uroot -p
 CREATE USER 'admin'@'172.17.0.1' IDENTIFIED BY 'pwd';
 GRANT ALL PRIVILEGES ON *.* TO 'admin'@'172.17.0.1' WITH GRANT OPTION;
 flush privileges;
 exit
 
-docker pull container-registry.oracle.com/database/free
-docker run -d --name=inv-api -p 1521:1521 -e ORACLE_SID=oracle -e ORACLE_PWD=pwd container-registry.oracle.com/database/free
--p 5500:5500
-
-docker pull mcr.microsoft.com/mssql/server
-docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PID=Developer" -p 1433:1433 -d mcr.microsoft.com/mssql/server
-docker run --name inv -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passworD!" -e "MSSQL_PID=Developer" -e "MSSQL_USER=user" -e "MSSQL_PASSWORD=passworD!" -p 1433:1433 -d mcr.microsoft.com/mssql/server
-docker exec -it inv /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P passworD!
-GRANT CONTROL SERVER TO user
-
-docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.1.0 start-dev
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.1.0 start-dev
 
 docker run --name zipkin -d -p 9411:9411 openzipkin/zipkin
 
-docker compose up -d
+docker compose up -d //for the kafka
+
+//cmd cd into api-gateway and docker build -t api-gateway .
+
+cmd docker login registry.hub.docker.com
+mvn clean compile jib:build //pushing all apis to docker
+
+
+docker commit product-api-data 0145136798/product-api-mongo
+docker push 0145136798/product-api-mongo
+docker run -p 27017:27017 --name product-api-mongo 0145136798/product-api-mongo
+docker run -p 27017:27017 --name product-api-data -v mongodb_data:/data/db mongo
+works fine
 </details>
 
 </br>
