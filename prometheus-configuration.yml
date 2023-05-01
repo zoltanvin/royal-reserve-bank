@@ -1,0 +1,29 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'product-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['product-api:8080']
+        labels:
+          application: 'Product-API'
+  - job_name: 'order-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['order-api:8080']
+        labels:
+          application: 'Order-API'
+  - job_name: 'inventory-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['inventory-api:8080']
+        labels:
+          application: 'Inventory-API'
+  - job_name: 'notification-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['notification-api:8080']
+        labels:
+          application: 'Notification-API'
