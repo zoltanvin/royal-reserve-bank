@@ -15,9 +15,7 @@ public class SecurityConfig {
         serverHttpSecurity
                 .csrf().disable()
                 .authorizeExchange(exchange ->
-                        exchange.pathMatchers("/eureka/**")
-                                .permitAll()
-                                .pathMatchers("/discovery-server-api/**")
+                        exchange.pathMatchers("/eureka/**", "/discovery-server/**")
                                 .permitAll()
                                 .anyExchange()
                                 .authenticated())
@@ -25,4 +23,3 @@ public class SecurityConfig {
         return serverHttpSecurity.build();
     }
 }
-

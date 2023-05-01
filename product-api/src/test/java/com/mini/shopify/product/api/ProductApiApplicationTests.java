@@ -15,14 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Testcontainers
 @AutoConfigureMockMvc
 class ProductApiApplicationTests {
 
@@ -35,6 +33,10 @@ class ProductApiApplicationTests {
     @Autowired
     private ProductRepository productRepository;
 
+    static {
+        mongoDBContainer.start();
+    }
+
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dymDynamicPropertyRegistry) {
         dymDynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
@@ -44,11 +46,12 @@ class ProductApiApplicationTests {
     void shouldCreateProduct() throws Exception {
         ProductRequest productRequest = getProductRequest();
         String productRequestString = objectMapper.writeValueAsString(productRequest);
+        int oldSize = productRepository.findAll().size();
         mockMvc.perform(MockMvcRequestBuilders.post("/api/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(productRequestString))
                 .andExpect(status().isCreated());
-        Assertions.assertEquals(1, productRepository.findAll().size());
+        Assertions.assertEquals(oldSize + 1, productRepository.findAll().size());
     }
 
     private ProductRequest getProductRequest() {
@@ -58,5 +61,4 @@ class ProductApiApplicationTests {
                 .price(BigDecimal.valueOf(199))
                 .build();
     }
-
 }
