@@ -63,62 +63,6 @@
 			"response": []
 		},
 		{
-			"name": "Keycloak",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"access_token\", pm.response.json().access_token);\r",
-							"\r",
-							"pm.test(\"Access token is present\", function () {\r",
-							"    pm.expect(pm.environment.get(\"access_token\")).to.not.equal(null);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "default"
-						},
-						{
-							"key": "client_id",
-							"value": "{{client_id}}",
-							"type": "default"
-						},
-						{
-							"key": "client_secret",
-							"value": "**********",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{oidc_provider}}",
-					"host": [
-						"{{oidc_provider}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get all products",
 			"event": [
 				{
