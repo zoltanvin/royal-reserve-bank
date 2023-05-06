@@ -39,19 +39,24 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
     restart: unless-stopped
 
-  oidc-provider:
-    image: 0145136798/oidc-provider
-    container_name: oidc-provider
+  oidc-provider-keycloak:
+    image: quay.io/keycloak/keycloak:21.1.0
+    container_name: oidc-provider-keycloak
     ports:
       - "8200:8080"
+    command:
+      - start-dev
+      - --import-realm
     environment:
       DB_VENDOR: h2
       DB_ADDR: localhost
       DB_DATABASE: db
       DB_USER: username
       DB_PASSWORD: password
-      JDBC_PARAMS: DB_CLOSE_DELAY=-1;MODE=MYSQL
-    restart: unless-stopped
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak-realm.json:/opt/keycloak/data/import/keycloak-realm.json
 
   order-api-postgres:
     image: postgres:15.2
