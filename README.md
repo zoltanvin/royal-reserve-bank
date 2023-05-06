@@ -1,12 +1,12 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/zoltanvin/mini-shopify"><img src="https://github.com/zoltanvin/mini-shopify/blob/main/assets/logo.png" alt="Mini Shopify" width="200"></a>
+  <a href="https://github.com/zoltanvin/royal-reserve-bank"><img src="https://github.com/zoltanvin/royal-reserve-bank/blob/main/assets/logo.png" alt="Mini Shopify" width="200"></a>
   <br>
-  Mini Shopify
+  Royal Reserve Bank
   <br>
 </h1>
 
-<h3 align="center">The E-commerce platform</a></h3>
+<h3 align="center">Experience the first-class service</a></h3>
 <p align="center">
   <a href="#about-">About</a> •
   <a href="#microservices-">Microservices</a> •
@@ -17,9 +17,9 @@
 
 # About 🚀
 
-This project is an online shop application using microservices architecture, focused on using the latest Spring Cloud technologies along with Spring Boot to implement various architectural patterns such as service discovery, centralized configuration, distributed tracing, circuit breaker, centralized logging and event-driven architecture.
+The Royal Reserve Bank is a digital banking platform built using microservices architecture, focused on using the latest Spring Cloud technologies along with Spring Boot to implement various architectural patterns such as service discovery, centralized configuration, distributed tracing, circuit breaker, centralized logging and event-driven architecture.
 
-The project involves building several microservices, including a product service, order service, inventory service and notification service. These services communicate with each other synchronously and asynchronously to perform tasks such as creating and viewing products, placing orders, checking inventory and sending email notifications. The project also utilizes popular message queues like RabbitMQ and Kafka for asynchronous communication.
+The platform is built using multiple microservices, including the Account API, Transaction API, Asset Management API and Notification API. These microservices communicate with each other synchronously and asynchronously to perform various banking activities, such as account creation, money transfers, asset management and sending email or SMS notifications. The project also uses message queues like RabbitMQ and Kafka for asynchronous communication.
 
 The solution architecture of the project includes the use of MongoDB and MySQL databases for data storage, API Gateway as a gateway for user requests, and surrounding services that enable the microservice architecture.
 
@@ -27,24 +27,22 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 
 # Microservices 📋
 
-1. **Product API** for creating and viewing products. It acts as a product catalog and it communicates with a MongoDB database.
-2. **Order API** for ordering products. It communicates with a MySQL database.
-3. **Inventory API** for checking if product is in stock or not. Also communicates with a MySQL database.
-4. **Notification API** sends notifications after the order is places. It is stateless and does not have a database.
-5. **API Gateway** provides a single entry point for users to communicate with the microservices. It acts as a gatekeeper for sending requests from users to different services. This way, users do not have to directly communicate with the host names or IP addresses of the microservices.
+1. **Account API** for managing accounts. It acts as an account catalog and communicates with a MongoDB database.
+2. **Transaction API** for processing transactions. It communicates with a MySQL database.
+3. **Asset Management API** for checking the availability of assets. It also communicates with a MySQL database.
+4. **Notification API** sends notifications to customers. It is stateless and does not have a database.
+5. **API Gateway** provides a single entry point for customers to communicate with the microservices. It routes customer requests to the appropriate microservice and handles authentication, authorization, and security.
 
-- The Order API communicates with the Inventory API and Product API synchronously to check the availability of products before placing an order. It also communicates with the Notification API asynchronously to send notifications after a successful order placement.
-
+- The Transaction API communicates with the Account API and Asset Management API synchronously to check the availability of funds and assets before processing any transaction. It also communicates with the Notification API asynchronously to send notifications after a successful transaction.
 # Solution Architecture 🔍
 
-![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/high_level_architecture.png)
+![image](https://github.com/zoltanvin/royal-reserve-bank/blob/main/assets/high_level_architecture.png)
 
 
 <details>
   <summary>More detail</summary>
 
-  ![image](https://github.com/zoltanvin/mini-shopify/blob/main/assets/logical_architecture.png)
-
+test
 </details>
 
 # Clone And Use 🔨
@@ -56,7 +54,7 @@ Prerequisites
 To run the application using Docker:
 
 - Build the application by running `mvn clean package -DskipTests` and create the docker image locally.
-- Start the applications using Docker Compose by running `docker-compose up -d`.
+- Start the applications using Docker Compose by running `docker-compose up`.
 
 To run the application without Docker:
 
@@ -67,9 +65,9 @@ To run the application without Docker:
 
 - **Spring Boot:** for simplifying the development and deployment of microservices by using pre-configured templates and tools.
 - **Spring Cloud:** for implementing microservices architectural patterns, such as service discovery, configuration management, and circuit breakers.
-- **MongoDB:** for storing product data in the Product Service allowing flexibility and scalability in handling large amounts of unstructured data.
-- **MySQL:** for storing order and inventory data in the Order Service and Inventory Service.
-- **RabbitMQ and Kafka:** for implementing asynchronous communication between microservices.
+- **MongoDB:** for storing account data in the Account API allowing flexibility and scalability in handling large amounts of unstructured data.
+- **MySQL:** for storing transactions and asset data in the Transaction API and Asset Management API.
+- **Kafka:** for implementing asynchronous communication between microservices.
 - **API Gateway:** for managing and routing API requests from users to different microservices and providing a unified entry point.
 - **JPA:** for implementing the Object Relational Mapping in the microservices, allowing Java applications to interact with databases and perform CRUD.
 - **Docker:** for containerization of microservices, making it easy to package and deploy the microservices across different environments.
@@ -77,38 +75,13 @@ To run the application without Docker:
 
 <details>
   <summary>Notes for myself</summary>
-docker run --name product-api -p 27017:27017 mongo
-
-docker run --name order-api -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=admin -d postgres
-
-docker run --name inventory-api -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_USER=admin -d mysql
-docker exec -it inventory-api  mysql -uroot -p
-CREATE USER 'admin'@'172.17.0.1' IDENTIFIED BY 'pwd';
-GRANT ALL PRIVILEGES ON *.* TO 'admin'@'172.17.0.1' WITH GRANT OPTION;
-flush privileges;
-exit
-
-docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.1.0 start-dev
-
-docker run --name zipkin -d -p 9411:9411 openzipkin/zipkin
-
-docker compose up -d //for the kafka
-
-//cmd cd into api-gateway and docker build -t api-gateway .
 
 cmd docker login registry.hub.docker.com
-mvn clean compile jib:build //pushing all apis to docker
+mvn clean compile jib:build
 
-docker commit grafana 0145136798/grafana
-docker push 0145136798/grafana
-docker run -p 27017:27017 --name product-api-mongo 0145136798/product-api-mongo
-docker run -p 27017:27017 --name product-api-data -v mongodb_data:/data/db mongo
-works fine
-
-http://localhost:8080/discovery-server
 http://localhost:8761/
 http://localhost:4000/actuator/health
-http://localhost:9411/zipkin/
+http://localhost:9411/
 http://localhost:9090/
 http://localhost:3000/
 

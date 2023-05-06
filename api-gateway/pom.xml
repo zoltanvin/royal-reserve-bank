@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>mini-shopify</artifactId>
-        <groupId>org.mini-shopify</groupId>
+        <artifactId>royal-reserve-bank</artifactId>
+        <groupId>org.royal-reserve-bank</groupId>
         <version>1.0</version>
     </parent>
 

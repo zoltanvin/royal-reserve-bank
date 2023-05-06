@@ -1,0 +1,14 @@
+package com.royal.reserve.bank.transaction.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransactionRequest {
+    private List<TransactionItemsDto> transactionItemsDtoList;
+}

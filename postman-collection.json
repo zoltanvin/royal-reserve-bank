@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "22e2126f-0677-49cf-8b96-cc81b0b93714",
-		"name": "Mini Shopify",
+		"name": "Royal Reserve Bank",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27145352"
 	},
@@ -68,19 +68,20 @@
 			"response": []
 		},
 		{
-			"name": "Get all products",
+			"name": "Get all accounts",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Products are present\", function () {\r",
+							"pm.test(\"Accounts are present\", function () {\r",
 							"    var responseJson = pm.response.json();\r",
 							"    pm.expect(responseJson.length).to.be.above(0);\r",
 							"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"name\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"description\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"price\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Status code is 200\", function (){\r",
@@ -116,28 +117,28 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/product",
+					"raw": "{{url}}/api/account",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"product"
+						"account"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create a new product",
+			"name": "Create a new account",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Product is created\", function () {\r",
+							"pm.test(\"Account is created\", function () {\r",
 							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Product created successfully:');\r",
+							"    pm.expect(responseBody).to.include('Successfully set up a new bank account for');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Status code is 201\", function (){\r",
@@ -162,7 +163,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"The Lord of the Rings\",\r\n    \"description\": \"Paper book\",\r\n    \"price\": 99\r\n}\r\n",
+					"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\",\r\n    \"balance\": 4000,\r\n    \"currency\": \"EUR\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -170,32 +171,33 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/product",
+					"raw": "{{url}}/api/account",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"product"
+						"account"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get all products",
+			"name": "Get all accounts",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Products are present\", function () {\r",
+							"pm.test(\"Accounts are present\", function () {\r",
 							"    var responseJson = pm.response.json();\r",
 							"    pm.expect(responseJson.length).to.be.above(0);\r",
 							"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"name\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"description\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"price\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
+							"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Status code is 200\", function (){\r",
@@ -231,28 +233,28 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/product",
+					"raw": "{{url}}/api/account",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"product"
+						"account"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete a product",
+			"name": "Delete an account",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Product is not found\", function () {\r",
+							"pm.test(\"Account is removed\", function () {\r",
 							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Product deleted successfully');\r",
+							"    pm.expect(responseBody).to.include('Successfully deleted');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Status code is 200\", function (){\r",
@@ -277,7 +279,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"The Lord of the Rings\"\r\n}",
+					"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -285,26 +287,26 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/product",
+					"raw": "{{url}}/api/account",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"product"
+						"account"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete a non-existent product",
+			"name": "Delete a non-existent account",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Product is removed\", function () {\r",
+							"pm.test(\"Account is not found\", function () {\r",
 							"    var responseBody = pm.response.text();\r",
 							"    pm.expect(responseBody).to.include('not found');\r",
 							"});\r",
@@ -331,7 +333,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"The Lord of the Rings\"\r\n}",
+					"raw": "{\r\n    \"accountHolderName\": \"Tom Hanks\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -339,28 +341,28 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/product",
+					"raw": "{{url}}/api/account",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"product"
+						"account"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Successful order",
+			"name": "Successful transaction",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Order placed\", function () {\r",
+							"pm.test(\"Transaction is finished\", function () {\r",
 							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Order placed successfully!');\r",
+							"    pm.expect(responseBody).to.include('Transaction completed successfully!');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Status code is 200\", function (){\r",
@@ -385,7 +387,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"orderLineItemsDtoList\":[\r\n        {\r\n            \"skuCode\": \"The Great Gatsby\",\r\n            \"price\": 199,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n\r\n}",
+					"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"SEC\",\r\n            \"assetName\": \"Corporate bonds\",\r\n            \"value\": 2000\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -393,26 +395,26 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/order",
+					"raw": "{{url}}/api/transaction",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"order"
+						"transaction"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Wrong quantity order",
+			"name": "Insufficient funds transaction",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Order quantity is wrong\", function () {\r",
+							"pm.test(\"Insufficient funds\", function () {\r",
 							"    var responseBody = pm.response.text();\r",
 							"    pm.expect(responseBody).to.include('Oops! Something went wrong');\r",
 							"});\r",
@@ -439,7 +441,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"orderLineItemsDtoList\":[\r\n        {\r\n            \"skuCode\": \"The Hunger Games\",\r\n            \"price\": 80,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n\r\n}",
+					"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"DERIV\",\r\n            \"assetName\": \"Options contracts\",\r\n            \"value\": 35000\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -447,13 +449,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/order",
+					"raw": "{{url}}/api/transaction",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"order"
+						"transaction"
 					]
 				}
 			},

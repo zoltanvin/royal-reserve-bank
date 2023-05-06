@@ -10,15 +10,15 @@
         <version>3.0.6</version>
     </parent>
 
-    <groupId>org.mini-shopify</groupId>
-    <artifactId>mini-shopify</artifactId>
+    <groupId>org.royal-reserve-bank</groupId>
+    <artifactId>royal-reserve-bank</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
 
     <modules>
-        <module>product-api</module>
-        <module>order-api</module>
-        <module>inventory-api</module>
+        <module>asset-management-api</module>
+        <module>account-api</module>
+        <module>transaction-api</module>
         <module>discovery-server</module>
         <module>api-gateway</module>
         <module>notification-api</module>
