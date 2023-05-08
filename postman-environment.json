@@ -4,7 +4,7 @@
 	"values": [
 		{
 			"key": "oidc_provider",
-			"value": "http://localhost:8200/realms/87686574/protocol/openid-connect/token",
+			"value": "https://dev-w4tsg2n64xw88mjb.us.auth0.com/oauth/token",
 			"type": "default",
 			"enabled": true
 		},
@@ -16,18 +16,24 @@
 		},
 		{
 			"key": "secret",
-			"value": "**********",
+			"value": "e5qQhoxUuG9_f_2FMlSiNkdix7R4BALqecMNb-SAKTGd123j8IrzpspKTr1dcWkS",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "client_id",
-			"value": "247823472234",
+			"value": "o9BivpkKvTVVzCTp5cbBy7CqJ2fpDoEA",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "audience",
+			"value": "23425532",
 			"type": "default",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-05-06T12:45:34.789Z",
+	"_postman_exported_at": "2023-05-08T19:25:23.783Z",
 	"_postman_exported_using": "Postman/10.13.5"
 }
