@@ -99,12 +99,19 @@ docker compose up -d //for the kafka
 cmd docker login registry.hub.docker.com
 mvn clean compile jib:build //pushing all apis to docker
 
-
-docker commit product-api-data 0145136798/product-api-mongo
-docker push 0145136798/product-api-mongo
+docker commit grafana 0145136798/grafana
+docker push 0145136798/grafana
 docker run -p 27017:27017 --name product-api-mongo 0145136798/product-api-mongo
 docker run -p 27017:27017 --name product-api-data -v mongodb_data:/data/db mongo
 works fine
+
+http://localhost:8080/discovery-server
+http://localhost:8761/
+http://localhost:4000/actuator/health
+http://localhost:9411/zipkin/
+http://localhost:9090/
+http://localhost:3000/
+
 </details>
 
 </br>
