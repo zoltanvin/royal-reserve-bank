@@ -1,5 +1,26 @@
 version: "3.8"
 services:
+  account-api:
+    container_name: account-api
+    image: 0145136798/account-api
+    pull_policy: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - account-api-mongo
+      - discovery-server
+      - api-gateway
+
+  account-api-mongo:
+    image: mongo:6.0.5
+    container_name: account-api-mongo
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    volumes:
+      - ./data/account-api-mongo:/data/mongo
+    restart: unless-stopped
 
   api-gateway:
     image: 0145136798/api-gateway
@@ -15,6 +36,34 @@ services:
     depends_on:
       - zipkin
       - discovery-server
+
+  asset-management-api:
+    container_name: asset-management-api
+    image: 0145136798/asset-management-api
+    pull_policy: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - asset-management-api-mysql
+      - discovery-server
+      - api-gateway
+
+  asset-management-api-mysql:
+    container_name: asset-management-api-mysql
+    image: mysql:8.0.33
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pwd
+      MYSQL_ROOT_PASSWORD: pwd
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./data/asset-management-api-mysql:/data/mysql
+    restart: unless-stopped
 
   discovery-server:
     image: 0145136798/discovery-server
@@ -43,34 +92,6 @@ services:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: password
     #NOTE: Dashboard ID: 11378
-
-  inventory-api:
-    container_name: inventory-api
-    image: 0145136798/inventory-api
-    pull_policy: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - inventory-api-mysql
-      - discovery-server
-      - api-gateway
-
-  inventory-api-mysql:
-    container_name: inventory-api-mysql
-    image: mysql:8.0.33
-    ports:
-      - "3306:3306"
-    expose:
-      - "3306"
-    environment:
-      MYSQL_DATABASE: mysql
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: pwd
-      MYSQL_ROOT_PASSWORD: pwd
-    command: --default-authentication-plugin=mysql_native_password
-    volumes:
-      - ./data/inventory-api-mysql:/data/mysql
-    restart: unless-stopped
 
   notification-api:
     container_name: notification-api
@@ -102,56 +123,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@notification-api-kafka:29093
 
-  order-api:
-    container_name: order-api
-    image: 0145136798/order-api
-    pull_policy: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - order-api-postgres
-      - notification-api-kafka
-      - zipkin
-      - discovery-server
-      - api-gateway
-
-  order-api-postgres:
-    image: postgres:15.2
-    container_name: order-api-postgres
-    ports:
-      - "5432:5432"
-    expose:
-      - "5432"
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: admin
-    volumes:
-      - ./data/order-api-postgres:/data/postgres
-    restart: unless-stopped
-
-  product-api:
-    container_name: product-api
-    image: 0145136798/product-api
-    pull_policy: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - product-api-mongo
-      - discovery-server
-      - api-gateway
-
-  product-api-mongo:
-    image: mongo:6.0.5
-    container_name: product-api-mongo
-    ports:
-      - "27017:27017"
-    expose:
-      - "27017"
-    volumes:
-      - ./data/product-api-mongo:/data/mongo
-    restart: unless-stopped
-
   prometheus:
     image: prom/prometheus:v2.43.0
     container_name: prometheus
@@ -161,10 +132,38 @@ services:
     volumes:
       - ./prometheus-configuration.yml:/etc/prometheus/prometheus.yml
     depends_on:
-      - product-api
-      - inventory-api
-      - order-api
+      - account-api
+      - asset-management-api
+      - transaction-api
       - notification-api
+
+  transaction-api:
+    container_name: transaction-api
+    image: 0145136798/transaction-api
+    pull_policy: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - transaction-api-postgres
+      - notification-api-kafka
+      - zipkin
+      - discovery-server
+      - api-gateway
+
+  transaction-api-postgres:
+    image: postgres:15.2
+    container_name: transaction-api-postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./data/transaction-api-postgres:/data/postgres
+    restart: unless-stopped
 
   zipkin:
     image: openzipkin/zipkin:2.24.0

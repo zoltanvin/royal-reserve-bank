@@ -3,24 +3,24 @@ global:
   evaluation_interval: 10s
 
 scrape_configs:
-  - job_name: 'product-api'
+  - job_name: 'account-api'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['product-api:8080']
+      - targets: ['account-api:8080']
         labels:
-          application: 'Product-API'
-  - job_name: 'order-api'
+          application: 'Account-API'
+  - job_name: 'transaction-api'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['order-api:8080']
+      - targets: ['transaction-api:8080']
         labels:
-          application: 'Order-API'
-  - job_name: 'inventory-api'
+          application: 'Transaction-API'
+  - job_name: 'asset-management-api'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['inventory-api:8080']
+      - targets: ['asset-management-api:8080']
         labels:
-          application: 'Inventory-API'
+          application: 'Asset-management-API'
   - job_name: 'notification-api'
     metrics_path: '/actuator/prometheus'
     static_configs:
