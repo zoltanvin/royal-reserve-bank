@@ -27,3 +27,15 @@ scrape_configs:
       - targets: ['notification-api:8080']
         labels:
           application: 'Notification-API'
+  - job_name: 'discovery-server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['discovery-server:8761']
+        labels:
+          application: 'Discovery-Server'
+  - job_name: 'config-server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['config-server:8888']
+        labels:
+          application: 'Config-Server'

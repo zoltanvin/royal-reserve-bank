@@ -7,459 +7,852 @@
 	},
 	"item": [
 		{
-			"name": "Authorization",
-			"event": [
+			"name": "Test connection",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"access_token\", pm.response.json().access_token);\r",
-							"\r",
-							"pm.test(\"Access token is present\", function () {\r",
-							"    pm.expect(pm.environment.get(\"access_token\")).to.not.equal(null);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
+					"name": "Authorization",
+					"event": [
 						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "default"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().access_token);\r",
+									"\r",
+									"pm.test(\"Access token is present\", function () {\r",
+									"    pm.expect(pm.environment.get(\"access_token\")).to.not.equal(null);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
 						},
-						{
-							"key": "client_id",
-							"value": "{{client_id}}",
-							"type": "default"
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "default"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "default"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{secret}}",
+									"type": "default"
+								},
+								{
+									"key": "audience",
+									"value": "{{audience}}",
+									"type": "text"
+								}
+							]
 						},
+						"url": {
+							"raw": "{{oidc_provider}}",
+							"host": [
+								"{{oidc_provider}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API Gateway",
+					"event": [
 						{
-							"key": "client_secret",
-							"value": "{{secret}}",
-							"type": "default"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true,
+							"host": true
 						},
+						"disableCookies": true
+					},
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Config Server",
+					"event": [
 						{
-							"key": "audience",
-							"value": "{{audience}}",
-							"type": "text"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/config-server/account-api/default",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"config-server",
+								"account-api",
+								"default"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{oidc_provider}}",
-					"host": [
-						"{{oidc_provider}}"
-					]
+				{
+					"name": "Discovery Server",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/discovery-server",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"discovery-server"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asset Management API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/asset-management",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"asset-management"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notification API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/notification",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service is listening\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var statusCodes = [404, 500];\r",
+									"    pm.expect(responseBody).not.to.include('Could not send request');\r",
+									"    pm.expect(statusCodes).not.to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/transaction",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"transaction"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Get all accounts",
-			"event": [
+			"name": "Test function",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Accounts are present\", function () {\r",
-							"    var responseJson = pm.response.json();\r",
-							"    pm.expect(responseJson.length).to.be.above(0);\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Authorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().access_token);\r",
+									"\r",
+									"pm.test(\"Access token is present\", function () {\r",
+									"    pm.expect(pm.environment.get(\"access_token\")).to.not.equal(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/account",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create a new account",
-			"event": [
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "default"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "default"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{secret}}",
+									"type": "default"
+								},
+								{
+									"key": "audience",
+									"value": "{{audience}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{oidc_provider}}",
+							"host": [
+								"{{oidc_provider}}"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Account is created\", function () {\r",
-							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Successfully set up a new bank account for');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 201\", function (){\r",
-							"    pm.response.to.have.status(201);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\",\r\n    \"balance\": 4000,\r\n    \"currency\": \"EUR\"\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Get all accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Accounts are present\", function () {\r",
+									"    var responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.length).to.be.above(0);\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/account",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get all accounts",
-			"event": [
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Accounts are present\", function () {\r",
-							"    var responseJson = pm.response.json();\r",
-							"    pm.expect(responseJson.length).to.be.above(0);\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
-							"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Create a new account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Account is created\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Successfully set up a new bank account for');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/account",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete an account",
-			"event": [
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\",\r\n    \"balance\": 4000,\r\n    \"currency\": \"EUR\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Account is removed\", function () {\r",
-							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Successfully deleted');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Get all accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Accounts are present\", function () {\r",
+									"    var responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.length).to.be.above(0);\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"id\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"accountNumber\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"accountHolderName\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"balance\");\r",
+									"    pm.expect(responseJson[0]).to.have.property(\"currency\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/account",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a non-existent account",
-			"event": [
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disableCookies": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Account is not found\", function () {\r",
-							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('not found');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 404\", function (){\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"accountHolderName\": \"Tom Hanks\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Delete an account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Account is removed\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Successfully deleted');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/account",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Successful transaction",
-			"event": [
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountHolderName\": \"Brad Pitt\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Transaction is finished\", function () {\r",
-							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Transaction completed successfully!');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(201);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"SEC\",\r\n            \"assetName\": \"Corporate bonds\",\r\n            \"value\": 2000\r\n        }\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Delete a non-existent account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Account is not found\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('not found');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function (){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/transaction",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"transaction"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Insufficient funds transaction",
-			"event": [
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountHolderName\": \"Tom Hanks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Insufficient funds\", function () {\r",
-							"    var responseBody = pm.response.text();\r",
-							"    pm.expect(responseBody).to.include('Oops! Something went wrong');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function (){\r",
-							"    pm.response.to.have.status(201);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"DERIV\",\r\n            \"assetName\": \"Options contracts\",\r\n            \"value\": 35000\r\n        }\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Successful transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Transaction is finished\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Transaction completed successfully!');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/transaction",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"transaction"
-					]
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"SEC\",\r\n            \"assetName\": \"Corporate bonds\",\r\n            \"value\": 2000\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/transaction",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insufficient funds transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Insufficient funds\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Oops! Something went wrong');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"transactionItemsDtoList\":[\r\n        {\r\n            \"assetCode\": \"DERIV\",\r\n            \"assetName\": \"Options contracts\",\r\n            \"value\": 35000\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/transaction",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connect to config server",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful config server connection\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('file:config-files/');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/config-server/discovery-server/docker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"config-server",
+								"discovery-server",
+								"docker"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [

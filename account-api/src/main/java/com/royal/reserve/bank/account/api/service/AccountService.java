@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +16,8 @@ import java.util.Locale;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+
+    private static final Random random = new Random();
 
     public void createAccount(AccountRequest accountRequest) {
         Account account = Account.builder()
@@ -34,7 +33,6 @@ public class AccountService {
 
     public static String generateIBAN() {
         String[] countryCodes = Locale.getISOCountries();
-        Random random = new Random();
         int index = random.nextInt(countryCodes.length);
         String countryCode = countryCodes[index];
         String accountNumber = String.format("%02d-%04d-%04d-%04d-%04d-%04d",
@@ -77,7 +75,7 @@ public class AccountService {
         if (accountToDelete.isPresent()) {
             accountRepository.delete(accountToDelete.get());
         } else {
-            throw new RuntimeException("The bank account information for "
+            throw new NoSuchElementException("The bank account information for "
                     + name + " was not found.");
         }
     }

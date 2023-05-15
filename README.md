@@ -42,7 +42,7 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 <details>
   <summary>More detail</summary>
 
-test
+ to be continued...
 </details>
 
 # Clone And Use 🔨
@@ -51,15 +51,14 @@ Prerequisites
 
 - Make sure you have Java 17, MongoDB, Docker, MySQL, Maven, Spring Boot, Spring Cloud, Kibana and a compatible IDE (e.g. IntelliJ IDEA, Eclipse) installed and configured.
 
-To run the application using Docker:
+To run the applications inside Docker:
 
-- Build the application by running `mvn clean package -DskipTests` and create the docker image locally.
-- Start the applications using Docker Compose by running `docker-compose up`.
+- Start the microservices using Docker Compose by running `docker-compose up -d`.
 
-To run the application without Docker:
+To run the application in your local environment:
 
-- Build the application by running `mvn clean verify -DskipTests` inside each folder.
-- Start the applications by running `mvn spring-boot:run` inside each folder.
+- Start the supporting services using Docker Compose by running `docker-compose docker-compose-infrastructure-services.yml up -d`.
+- Start the applications by running `mvn spring-boot:run -pl config-server,discovery-server,api-gateway,account-api,asset-management-api,transaction-api,notification-api`.
 
 # Technologies Used 💡
 
@@ -77,7 +76,7 @@ To run the application without Docker:
   <summary>Notes for myself</summary>
 
 cmd docker login registry.hub.docker.com
-mvn clean compile jib:build
+mvn clean compile jib:build && docker-compose down && docker-compose pull && docker compose up -d
 
 http://localhost:8761/
 http://localhost:4000/actuator/health

@@ -15,21 +15,55 @@
     <packaging>pom</packaging>
     <version>1.0</version>
 
-    <modules>
-        <module>asset-management-api</module>
-        <module>account-api</module>
-        <module>transaction-api</module>
-        <module>discovery-server</module>
-        <module>api-gateway</module>
-        <module>notification-api</module>
-    </modules>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
         <testcontainers-bom.version>1.18.0</testcontainers-bom.version>
+        <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>
+        <eclipse-temurin.version>17.0.7_7-jre</eclipse-temurin.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
+        <jwks-rsa.version>0.22.0</jwks-rsa.version>
     </properties>
+
+    <modules>
+        <module>config-server</module>
+        <module>discovery-server</module>
+        <module>api-gateway</module>
+        <module>account-api</module>
+        <module>asset-management-api</module>
+        <module>transaction-api</module>
+        <module>notification-api</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -47,6 +81,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>jwks-rsa</artifactId>
+                <version>${jwks-rsa.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -55,22 +99,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${jib-maven-plugin.version}</version>
                 <configuration>
                     <from>
-                        <image>eclipse-temurin:17.0.7_7-jre</image>
+                        <image>eclipse-temurin:${eclipse-temurin.version}</image>
                     </from>
                     <to>
                         <image>registry.hub.docker.com/0145136798/${project.artifactId}</image>
