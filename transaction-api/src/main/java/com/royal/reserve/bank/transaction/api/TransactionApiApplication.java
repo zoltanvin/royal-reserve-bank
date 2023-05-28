@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class TransactionApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TransactionApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TransactionApiApplication.class, args);
+    }
 
 }

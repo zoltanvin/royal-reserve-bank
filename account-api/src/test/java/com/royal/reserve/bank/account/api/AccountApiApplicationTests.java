@@ -1,9 +1,8 @@
 package com.royal.reserve.bank.account.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.royal.reserve.bank.account.api.repository.AccountRepository;
 import com.royal.reserve.bank.account.api.dto.AccountRequest;
-import com.royal.reserve.bank.account.api.service.AccountService;
+import com.royal.reserve.bank.account.api.repository.AccountRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,17 @@ class AccountApiApplicationTests {
 
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:6.0.5");
+
+    static {
+        mongoDBContainer.start();
+    }
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private AccountRepository accountRepository;
-
-    static {
-        mongoDBContainer.start();
-    }
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dymDynamicPropertyRegistry) {

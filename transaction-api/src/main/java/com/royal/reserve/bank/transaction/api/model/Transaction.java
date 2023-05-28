@@ -1,11 +1,11 @@
 package com.royal.reserve.bank.transaction.api.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

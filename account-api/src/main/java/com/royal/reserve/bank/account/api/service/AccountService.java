@@ -1,9 +1,9 @@
 package com.royal.reserve.bank.account.api.service;
 
+import com.royal.reserve.bank.account.api.dto.AccountRequest;
+import com.royal.reserve.bank.account.api.dto.AccountResponse;
 import com.royal.reserve.bank.account.api.model.Account;
 import com.royal.reserve.bank.account.api.repository.AccountRepository;
-import com.royal.reserve.bank.account.api.dto.AccountResponse;
-import com.royal.reserve.bank.account.api.dto.AccountRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,21 +15,8 @@ import java.util.*;
 @Slf4j
 public class AccountService {
 
-    private final AccountRepository accountRepository;
-
     private static final Random random = new Random();
-
-    public void createAccount(AccountRequest accountRequest) {
-        Account account = Account.builder()
-                .accountNumber(generateIBAN())
-                .accountHolderName(accountRequest.getAccountHolderName())
-                .balance(accountRequest.getBalance())
-                .currency(accountRequest.getCurrency())
-                .build();
-
-        accountRepository.save(account);
-        log.info("Account for {} is created", account.getAccountHolderName());
-    }
+    private final AccountRepository accountRepository;
 
     public static String generateIBAN() {
         String[] countryCodes = Locale.getISOCountries();
@@ -43,6 +30,18 @@ public class AccountService {
                 random.nextInt(10000),
                 random.nextInt(10000));
         return countryCode + accountNumber;
+    }
+
+    public void createAccount(AccountRequest accountRequest) {
+        Account account = Account.builder()
+                .accountNumber(generateIBAN())
+                .accountHolderName(accountRequest.getAccountHolderName())
+                .balance(accountRequest.getBalance())
+                .currency(accountRequest.getCurrency())
+                .build();
+
+        accountRepository.save(account);
+        log.info("Account for {} is created", account.getAccountHolderName());
     }
 
     public List<AccountResponse> getAllAccounts() {

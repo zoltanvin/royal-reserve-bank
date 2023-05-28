@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountTestData implements CommandLineRunner {
     private final AccountRepository accountRepository;
+
     @Override
     public void run(String... args) {
         List<Account> accountList = new ArrayList<>();
