@@ -55,7 +55,6 @@ To run the application in your local environment:
 
 - Make sure you have Java 17, MongoDB, MySQL, Maven, Spring Boot, Spring Cloud, Grafana and a compatible IDE (e.g. IntelliJ IDEA, Eclipse) installed and configured.
 - Alternatively you can also start only the supporting services in Docker using Docker Compose by running `docker-compose docker-compose-infrastructure-services.yml up -d`.
-- Start the applications by running `mvn spring-boot:run -pl config-server,discovery-server,api-gateway,account-api,asset-management-api,transaction-api,notification-api`.
 
 # Technologies Used 💡
 
