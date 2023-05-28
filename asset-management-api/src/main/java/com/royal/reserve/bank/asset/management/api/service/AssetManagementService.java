@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.apache.logging.log4j.ThreadContext.peek;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j

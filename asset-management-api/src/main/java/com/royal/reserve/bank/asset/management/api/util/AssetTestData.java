@@ -48,6 +48,6 @@ public class AssetTestData implements CommandLineRunner {
         assetList.add(assetItem5);
 
         assetManagementRepository.saveAll(assetList);
-    };
+    }
 }
 

@@ -23,7 +23,7 @@ public class AccountTestData implements CommandLineRunner {
         accountItem1.setAccountNumber("CZ61-5051-2543-6888-5372-1142");
         accountItem1.setAccountHolderName("Barbara Dvořáková");
         accountItem1.setBalance(BigDecimal.valueOf(1340238));
-        accountItem1.setCurrency(Currency.getInstance("EUR"));;
+        accountItem1.setCurrency(Currency.getInstance("EUR"));
         accountList.add(accountItem1);
 
         Account accountItem2 = new Account();
@@ -31,7 +31,7 @@ public class AccountTestData implements CommandLineRunner {
         accountItem2.setAccountNumber("GB46-4754-5577-4195-4725-4916");
         accountItem2.setAccountHolderName("Grace Robinson");
         accountItem2.setBalance(BigDecimal.valueOf(25843));
-        accountItem2.setCurrency(Currency.getInstance("GBP"));;
+        accountItem2.setCurrency(Currency.getInstance("GBP"));
         accountList.add(accountItem2);
 
         Account accountItem3 = new Account();
@@ -39,7 +39,7 @@ public class AccountTestData implements CommandLineRunner {
         accountItem3.setAccountNumber("FR59-1273-9000-5016-6948-8415");
         accountItem3.setAccountHolderName("Hugo Dupont");
         accountItem3.setBalance(BigDecimal.valueOf(14324));
-        accountItem3.setCurrency(Currency.getInstance("EUR"));;
+        accountItem3.setCurrency(Currency.getInstance("EUR"));
         accountList.add(accountItem3);
 
         Account accountItem4 = new Account();
@@ -47,10 +47,10 @@ public class AccountTestData implements CommandLineRunner {
         accountItem4.setAccountNumber("HU73-0472-9861-1757-7419-9231");
         accountItem4.setAccountHolderName("Anna Kiss");
         accountItem4.setBalance(BigDecimal.valueOf(8927382));
-        accountItem4.setCurrency(Currency.getInstance("HUF"));;
+        accountItem4.setCurrency(Currency.getInstance("HUF"));
         accountList.add(accountItem4);
 
         accountRepository.saveAll(accountList);
-    };
+    }
 }
 

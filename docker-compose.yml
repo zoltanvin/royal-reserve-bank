@@ -5,11 +5,12 @@ services:
     image: 0145136798/account-api
     pull_policy: always
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
       - account-api-mongo
-      - discovery-server
       - api-gateway
+    restart: on-failure
 
   account-api-mongo:
     image: mongo:6.0.5
@@ -20,7 +21,6 @@ services:
       - "27017"
     volumes:
       - ./data/account-api-mongo:/data/mongo
-    restart: unless-stopped
 
   api-gateway:
     image: 0145136798/api-gateway
@@ -31,22 +31,24 @@ services:
     expose:
       - "8080"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: TRACE
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
-      - zipkin
       - discovery-server
+    restart: on-failure
 
   asset-management-api:
     container_name: asset-management-api
     image: 0145136798/asset-management-api
     pull_policy: always
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
       - asset-management-api-mysql
-      - discovery-server
       - api-gateway
+    restart: on-failure
 
   asset-management-api-mysql:
     container_name: asset-management-api-mysql
@@ -63,7 +65,21 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - ./data/asset-management-api-mysql:/data/mysql
-    restart: unless-stopped
+
+  config-server:
+    container_name: config-server
+    image: 0145136798/config-server
+    pull_policy: always
+    ports:
+      - "8888:8888"
+    expose:
+      - "8888"
+    environment:
+      spring.profiles.active: docker
+    volumes:
+      - ./config-files:/app/resources/config-files
+    depends_on:
+      - zipkin
 
   discovery-server:
     image: 0145136798/discovery-server
@@ -74,36 +90,37 @@ services:
     expose:
       - "8761"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
-      - zipkin
+      - config-server
+    restart: on-failure
 
   grafana:
     image: grafana/grafana:9.5.1
     container_name: grafana
     ports:
       - "3000:3000"
-    restart: unless-stopped
     links:
       - prometheus:prometheus
     volumes:
       - ./data/grafana:/var/lib/grafana
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: password
-    #NOTE: Dashboard ID: 11378
+      gf_security_admin_user: admin
+      gf_security_admin_password: password
+    #note: dashboard id: 11378
 
   notification-api:
     container_name: notification-api
     image: 0145136798/notification-api
     pull_policy: always
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
-      - zipkin
       - notification-api-kafka
-      - discovery-server
       - api-gateway
+    restart: on-failure
 
   notification-api-kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -128,7 +145,6 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
-    restart: unless-stopped
     volumes:
       - ./prometheus-configuration.yml:/etc/prometheus/prometheus.yml
     depends_on:
@@ -142,13 +158,13 @@ services:
     image: 0145136798/transaction-api
     pull_policy: always
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      spring.profiles.active: docker
+      spring.cloud.config.uri: http://config-server:8888/config-server
     depends_on:
       - transaction-api-postgres
       - notification-api-kafka
-      - zipkin
-      - discovery-server
       - api-gateway
+    restart: on-failure
 
   transaction-api-postgres:
     image: postgres:15.2
@@ -163,7 +179,6 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - ./data/transaction-api-postgres:/data/postgres
-    restart: unless-stopped
 
   zipkin:
     image: openzipkin/zipkin:2.24.0
