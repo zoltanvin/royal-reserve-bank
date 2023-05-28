@@ -24,6 +24,7 @@
         <eclipse-temurin.version>17.0.7_7-jre</eclipse-temurin.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <jwks-rsa.version>0.22.0</jwks-rsa.version>
+        <logstash.version>7.3</logstash.version>
     </properties>
 
     <modules>
@@ -62,6 +63,11 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash.version}</version>
         </dependency>
     </dependencies>
 
