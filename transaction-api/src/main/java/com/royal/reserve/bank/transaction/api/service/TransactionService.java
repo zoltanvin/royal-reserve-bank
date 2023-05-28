@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service class that provides operations for managing transactions.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -25,6 +28,13 @@ public class TransactionService {
     private final AssetManagementClient assetManagementClient;
     private final KafkaTemplate<String, TransactionEvent> kafkaTemplate;
 
+    /**
+     *
+     *Process a transaction based on the provided transaction request.
+     *@param transactionRequest The transaction request containing the necessary information.
+     *@return A string message indicating the result of the transaction processing.
+     *@throws IllegalArgumentException If any of the requested assets are not available.
+     */
     public String processTransaction(TransactionRequest transactionRequest) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(UUID.randomUUID().toString());
@@ -53,6 +63,12 @@ public class TransactionService {
         }
     }
 
+    /**
+     *
+     *Maps the provided transaction items DTO to a TransactionItems object.
+     *@param transactionItemsDto The transaction items DTO to be mapped.
+     *@return The corresponding TransactionItems object.
+     */
     private TransactionItems mapToDto(TransactionItemsDto transactionItemsDto) {
         TransactionItems transactionItems = new TransactionItems();
         transactionItems.setAssetCode(transactionItemsDto.getAssetCode());

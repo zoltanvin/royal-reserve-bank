@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Controller class that handles HTTP requests related to transactions.
+ */
 @RestController
 @RequestMapping("/api/transaction")
 @RequiredArgsConstructor
@@ -20,6 +23,12 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+    /**
+     *
+     *Processes a transaction asynchronously.
+     *@param transactionRequest The transaction request object received in the request body.
+     *@return A CompletableFuture representing the result of the transaction processing.
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CircuitBreaker(name = "asset-management", fallbackMethod = "fallbackMethod")
@@ -30,6 +39,13 @@ public class TransactionController {
         return CompletableFuture.supplyAsync(() -> transactionService.processTransaction(transactionRequest));
     }
 
+    /**
+     *
+     *Circuit breaker implementation. Fallback method to handle exceptions during transaction processing.
+     *@param transactionRequest The transaction request object.
+     *@param runtimeException The exception that occurred during transaction processing.
+     *@return A CompletableFuture representing a fallback message.
+     */
     public CompletableFuture<String> fallbackMethod(TransactionRequest transactionRequest, RuntimeException runtimeException) {
         log.info("Transaction can't be processed. Executing fallback logic.");
         return CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please try again later!");

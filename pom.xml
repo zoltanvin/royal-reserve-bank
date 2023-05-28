@@ -24,6 +24,7 @@
         <eclipse-temurin.version>17.0.7_7-jre</eclipse-temurin.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <jwks-rsa.version>0.22.0</jwks-rsa.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
     </properties>
 
     <modules>
@@ -112,6 +113,11 @@
                         <image>registry.hub.docker.com/0145136798/${project.artifactId}</image>
                     </to>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

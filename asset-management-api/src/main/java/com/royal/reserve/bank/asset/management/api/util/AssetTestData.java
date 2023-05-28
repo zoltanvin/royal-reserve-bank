@@ -9,10 +9,15 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AssetTestData class is a component that implements the CommandLineRunner interface.
+ * It is responsible for populating test data into the AssetManagementRepository.
+ */
 @Component
 @RequiredArgsConstructor
 public class AssetTestData implements CommandLineRunner {
     private final AssetManagementRepository assetManagementRepository;
+
     @Override
     public void run(String... args) {
         List<Asset> assetList = new ArrayList<>();

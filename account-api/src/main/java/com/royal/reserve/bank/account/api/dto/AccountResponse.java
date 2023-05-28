@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+/**
+ * Data Transfer Object (DTO) class that represents the response payload for a bank account holder.
+ */
 @Data
 @Builder
 @AllArgsConstructor

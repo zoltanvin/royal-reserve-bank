@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class that handles HTTP requests related to asset management.
+ */
 @RestController
 @RequestMapping("/api/asset-management")
 @RequiredArgsConstructor
@@ -17,6 +20,12 @@ public class AssetManagementController {
 
     private final AssetManagementService assetManagementService;
 
+    /**
+     *
+     *Retrieves the availability status of assets based on their codes.
+     *@param assetCode The list of asset codes to check availability for.
+     *@return The list of asset management responses containing the availability status for each asset code.
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AssetManagementResponse> isAssetAvailable(@RequestParam List<String> assetCode) {
