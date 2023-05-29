@@ -34,6 +34,7 @@ services:
     environment:
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: password
+      ES_JAVA_OPTS: -Xmx256m -Xms256m
       discovery.type: single-node
     #note: ../../../usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token --scope kibana
 
@@ -42,6 +43,28 @@ services:
     container_name: kibana
     ports:
       - "5601:5601"
+#    environment:
+#      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+
+  logstash:
+    image: logstash:8.7.1
+    container_name: logstash
+    volumes:
+      - ./logstash.conf:/pipeline/logstash.conf
+    ports:
+      - "5000:5000"
+    environment:
+      XPACK_MONITORING_ENABLED: false
+
+#  logstash:
+#    image: logstash:8.7.1
+#    container_name: logstash
+#    ports:
+#      - "5000:5000/tcp"
+#      - "5000:5000/udp"
+#      - "9600:9600"
+#    environment:
+#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
 
   notification-api-kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -80,3 +103,13 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+
+#    networks:
+#      - elk
+
+#networks:
+#  elk:
+#    driver: bridge
+
+#volumes:
+#  elasticsearch:
