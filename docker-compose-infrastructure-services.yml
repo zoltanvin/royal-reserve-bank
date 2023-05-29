@@ -31,6 +31,8 @@ services:
     container_name: elasticsearch
     ports:
       - "9200:9200"
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
     environment:
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: password
@@ -43,6 +45,9 @@ services:
     container_name: kibana
     ports:
       - "5601:5601"
+    volumes:
+      - ./data/kibana/config:/usr/share/kibana/config
+      - ./data/kibana/data:/usr/share/kibana/data
 #    environment:
 #      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
 
@@ -51,6 +56,7 @@ services:
     container_name: logstash
     volumes:
       - ./logstash.conf:/pipeline/logstash.conf
+      - ./data/logstash:/usr/share/logstash/data
     ports:
       - "5000:5000"
     environment:
