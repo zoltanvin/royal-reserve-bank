@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object (DTO) class that represents the request payload for a transaction.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

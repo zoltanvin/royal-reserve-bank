@@ -29,6 +29,9 @@ import com.auth0.jwk.JwkException;
 import com.auth0.jwk.JwkProvider;
 import com.auth0.jwk.UrlJwkProvider;
 
+/**
+ * Configuration class for security settings and JWT token handling.
+ */
 @Configuration
 @EnableWebFluxSecurity
 @Getter
@@ -44,6 +47,16 @@ public class SecurityConfig {
 
     private String jwtToken;
 
+    /**
+     * Configures the security filters and rules for the server.
+     *
+     * @param serverHttpSecurity the ServerHttpSecurity object to configure
+     * @return the configured SecurityWebFilterChain object
+     * @throws IOException                if an I/O error occurs while reading the public key
+     * @throws JwkException               if an error occurs while fetching the JSON Web Key from the JwkProvider
+     * @throws NoSuchAlgorithmException  if the RSA algorithm is not available
+     * @throws InvalidKeySpecException    if the provided key specification is invalid
+     */
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) throws IOException, JwkException, NoSuchAlgorithmException, InvalidKeySpecException {
         //https://stackoverflow.com/questions/66389070/generating-public-key-from-jwk
@@ -69,26 +82,49 @@ public class SecurityConfig {
         return serverHttpSecurity.build();
     }
 
+    /**
+     * Loads the RSA public key from the JSON Web Key Set (JWK Set) URL.
+     *
+     * @param token the DecodedJWT object representing the decoded JWT
+     * @return the RSAPublicKey object loaded from the JWK Set
+     * @throws JwkException            if an error occurs while fetching the JSON Web Key from the JwkProvider
+     * @throws MalformedURLException  if the JWK Set URL is malformed
+     */
     private RSAPublicKey loadPublicKey(DecodedJWT token) throws JwkException, MalformedURLException {
         JwkProvider provider = new UrlJwkProvider(new URL(jwkSetUri));
         return (RSAPublicKey) provider.get(token.getKeyId()).getPublicKey();
     }
 
+    /**
+     * Reads the RSA public key from the provided PEM URL.
+     *
+     * @param pemUrl the URL of the PEM file containing the public key
+     * @return the RSAPublicKey object read from the PEM file
+     * @throws IOException                 if an I/O error occurs while reading the PEM file
+     * @throws NoSuchAlgorithmException   if the RSA algorithm is not available
+     * @throws InvalidKeySpecException     if the provided key specification is invalid
+     */
     public RSAPublicKey readPublicKeyFromPemUrl(String pemUrl) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         URL url = new URL(pemUrl);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        String pem = reader.lines().collect(Collectors.joining());
-        pem = pem
-                .replace("-----BEGIN CERTIFICATE-----", "")
-                .replace("-----END CERTIFICATE-----", "")
-                .replaceAll(System.lineSeparator(), "");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            String pem = reader.lines().collect(Collectors.joining());
+            pem = pem
+                    .replace("-----BEGIN CERTIFICATE-----", "")
+                    .replace("-----END CERTIFICATE-----", "")
+                    .replaceAll(System.lineSeparator(), "");
 
-        byte[] encoded = Base64.getDecoder().decode(pem);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
-        return (RSAPublicKey) keyFactory.generatePublic(keySpec);
+            byte[] encoded = Base64.getDecoder().decode(pem);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
+            return (RSAPublicKey) keyFactory.generatePublic(keySpec);
+        }
     }
 
+    /**
+     * Creates a WebFilter for extracting the JWT token from the request headers.
+     *
+     * @return the created WebFilter object
+     */
     @Bean
     WebFilter jwtFilter() {
         return (exchange, chain) -> {

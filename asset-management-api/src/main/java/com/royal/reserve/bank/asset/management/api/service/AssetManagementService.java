@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service class that provides operations for managing assets.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -17,6 +20,12 @@ public class AssetManagementService {
 
     private final AssetManagementRepository assetManagementRepository;
 
+    /**
+     *
+     *Checks the availability of assets based on their codes.
+     *@param assetCode The list of asset codes to check.
+     *@return A list of AssetManagementResponse objects indicating the availability of each asset.
+     */
     @Transactional(readOnly = true)
     @SneakyThrows
     public List<AssetManagementResponse> isAssetAvailable(List<String> assetCode) {

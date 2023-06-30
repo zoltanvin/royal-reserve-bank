@@ -57,6 +57,8 @@ To run the application in your local environment:
 - Alternatively you can also start only the supporting services in Docker using Docker Compose by running `docker-compose docker-compose-infrastructure-services.yml up -d`.
 - Start the applications by running `mvn spring-boot:run -pl config-server,discovery-server,api-gateway,account-api,asset-management-api,transaction-api,notification-api`.
 
+- For documentation run `mvn javadoc:aggregate` in the root directory. The generated javadoc can be found in the `target/site/apidocs`.
+
 # Technologies Used 💡
 
 - **Spring Boot:** for simplifying the development and deployment of microservices by using pre-configured templates and tools.

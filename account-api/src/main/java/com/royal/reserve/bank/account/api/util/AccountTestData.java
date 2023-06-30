@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
+/**
+ * The AccountTestData class is a component that implements the CommandLineRunner interface.
+ * It is responsible for populating test data into the AccountRepository.
+ */
 @Component
 @RequiredArgsConstructor
 public class AccountTestData implements CommandLineRunner {
@@ -20,7 +24,7 @@ public class AccountTestData implements CommandLineRunner {
         List<Account> accountList = new ArrayList<>();
         Account accountItem1 = new Account();
         accountItem1.setId("8d7b1ef68a240c93f6e5d82c");
-        accountItem1.setAccountNumber("CZ61-5051-2543-6888-5372-1142");
+        accountItem1.setAccountNumber("CZ61-5051-2543-6888-5372");
         accountItem1.setAccountHolderName("Barbara Dvořáková");
         accountItem1.setBalance(BigDecimal.valueOf(1340238));
         accountItem1.setCurrency(Currency.getInstance("EUR"));

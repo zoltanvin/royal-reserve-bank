@@ -8,6 +8,9 @@ import lombok.Setter;
 import jakarta.persistence.*;
 import java.util.List;
 
+/**
+ * Represents a transaction.
+ */
 @Entity
 @Table(name = "t_transaction")
 @Getter

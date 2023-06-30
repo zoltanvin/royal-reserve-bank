@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a transaction item.
+ */
 @Entity
 @Table(name = "t_transaction_items")
 @Getter
