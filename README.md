@@ -38,26 +38,21 @@ Utilized log analysis and monitoring tools such as Elasticsearch, Logstash and K
 
 ![image](https://github.com/zoltanvin/royal-reserve-bank/blob/main/assets/high_level_architecture.png)
 
-
-<!-- <details>
-  <summary>More detail</summary>
-
- to be continued...
-</details> -->
-
 # Clone And Use 🔨
 
-To run the applications inside Docker:
+To run the applications within Docker:
 
-- Start the microservices using Docker Compose by running `docker-compose up -d`.
+- Clone the repository and navigate to the project directory.
+- Start the microservices using Docker Compose by running the command `docker-compose up -d`.
 
 To run the application in your local environment:
 
-- Make sure you have Java 17, MongoDB, MySQL, Maven, Spring Boot, Spring Cloud, Grafana and a compatible IDE (e.g. IntelliJ IDEA, Eclipse) installed and configured.
-- Alternatively you can also start only the supporting services in Docker using Docker Compose by running `docker-compose docker-compose-infrastructure-services.yml up -d`.
-- Start the applications by running `mvn spring-boot:run -pl config-server,discovery-server,api-gateway,account-api,asset-management-api,transaction-api,notification-api`.
-
-- For documentation run `mvn javadoc:aggregate` in the root directory. The generated javadoc can be found in the `target/site/apidocs`.
+- Ensure that you have Java 17, Maven, and a compatible IDE (such as IntelliJ IDEA or Eclipse) installed and properly configured.
+- Start only the supporting services in Docker using Docker Compose by running the command `docker-compose docker-compose-infrastructure-services.yml up -d`.
+- To launch the applications, run each application in its respective module. Note that the config-server module should be started first.
+  </br>
+- Build the applications by first running the config-server application, then execute the command `mvn clean install -pl !config-server`.
+- To generate the documentation, run `mvn javadoc:aggregate` from the root directory. The generated Javadoc can be found in the target/site/apidocs folder. For convenience, I have exported the documentation to the javadoc folder.
 
 # Technologies Used 💡
 
@@ -73,20 +68,6 @@ To run the application in your local environment:
 - **Auth0:** for implementing authentication and authorization functionalities in the microservices, allowing secure access control.
 - **Grafana:** for monitoring and logging the microservices, providing insights into the performance and health of the microservices.
 - **Zipkin:** for distributed tracing in microservices architecture, allowing to track and analyze the flow of requests and performance analysis.
-
-<!-- <details>
-  <summary>Notes for myself</summary>
-
-cmd docker login registry.hub.docker.com
-mvn clean compile jib:build && docker-compose down && docker-compose pull && docker compose up -d
-
-http://localhost:8761/
-http://localhost:4000/actuator/health
-http://localhost:9411/
-http://localhost:9090/
-http://localhost:3000/
-
-</details> -->
 
 </br>
 ⭐ Star me on GitHub — it helps!

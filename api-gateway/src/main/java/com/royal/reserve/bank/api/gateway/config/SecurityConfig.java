@@ -15,13 +15,7 @@ import org.springframework.web.server.WebFilter;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
-import java.util.stream.Collectors;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -42,9 +36,6 @@ public class SecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
 
-    @Value("${pemUrl}")
-    private String pemUrl;
-
     private String jwtToken;
 
     /**
@@ -54,17 +45,12 @@ public class SecurityConfig {
      * @return the configured SecurityWebFilterChain object
      * @throws IOException                if an I/O error occurs while reading the public key
      * @throws JwkException               if an error occurs while fetching the JSON Web Key from the JwkProvider
-     * @throws NoSuchAlgorithmException  if the RSA algorithm is not available
-     * @throws InvalidKeySpecException    if the provided key specification is invalid
      */
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) throws IOException, JwkException, NoSuchAlgorithmException, InvalidKeySpecException {
-        //https://stackoverflow.com/questions/66389070/generating-public-key-from-jwk
-        //https://github.com/auth0/jwks-rsa-java/blob/master/src/main/java/com/auth0/jwk/Jwk.java#L176
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity)
+            throws IOException, JwkException {
         final DecodedJWT jwt = JWT.decode(encodedJwt);
-        //final DecodedJWT jwt = JWT.decode(getJwtToken());
         RSAPublicKey publicKey = loadPublicKey(jwt);
-        //RSAPublicKey publicKey = readPublicKeyFromPemUrl(pemUrl);
 
         serverHttpSecurity
                 .csrf().disable()
@@ -96,31 +82,6 @@ public class SecurityConfig {
     }
 
     /**
-     * Reads the RSA public key from the provided PEM URL.
-     *
-     * @param pemUrl the URL of the PEM file containing the public key
-     * @return the RSAPublicKey object read from the PEM file
-     * @throws IOException                 if an I/O error occurs while reading the PEM file
-     * @throws NoSuchAlgorithmException   if the RSA algorithm is not available
-     * @throws InvalidKeySpecException     if the provided key specification is invalid
-     */
-    public RSAPublicKey readPublicKeyFromPemUrl(String pemUrl) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        URL url = new URL(pemUrl);
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
-            String pem = reader.lines().collect(Collectors.joining());
-            pem = pem
-                    .replace("-----BEGIN CERTIFICATE-----", "")
-                    .replace("-----END CERTIFICATE-----", "")
-                    .replaceAll(System.lineSeparator(), "");
-
-            byte[] encoded = Base64.getDecoder().decode(pem);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
-            return (RSAPublicKey) keyFactory.generatePublic(keySpec);
-        }
-    }
-
-    /**
      * Creates a WebFilter for extracting the JWT token from the request headers.
      *
      * @return the created WebFilter object
@@ -133,7 +94,6 @@ public class SecurityConfig {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 jwtToken = authorizationHeader.substring(7);
             }
-            //System.out.println("WebFilter gets called. Token: " + jwtToken);
             return chain.filter(exchange);
         };
     }

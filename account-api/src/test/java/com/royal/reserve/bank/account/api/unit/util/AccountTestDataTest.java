@@ -52,19 +52,19 @@ class AccountTestDataTest {
         List<Account> accountList = new ArrayList<>();
 
         Account accountItem1 = createAccount("8d7b1ef68a240c93f6e5d82c", "CZ61-5051-2543-6888-5372",
-                "Barbara Dvořáková", BigDecimal.valueOf(1340238), Currency.getInstance("EUR"));
+                "Bruce Willis", BigDecimal.valueOf(1340238), Currency.getInstance("EUR"));
         accountList.add(accountItem1);
 
         Account accountItem2 = createAccount("644d736d24862f0104ae52f7", "GB46-4754-5577-4195-4725",
-                "Grace Robinson", BigDecimal.valueOf(25843), Currency.getInstance("GBP"));
+                "Harrison Ford", BigDecimal.valueOf(25843), Currency.getInstance("GBP"));
         accountList.add(accountItem2);
 
         Account accountItem3 = createAccount("9f36a8e2b1d0c47b5e81c93d", "FR59-1273-9000-5016-6948",
-                "Hugo Dupont", BigDecimal.valueOf(14324), Currency.getInstance("EUR"));
+                "Scarlett Johansson", BigDecimal.valueOf(14324), Currency.getInstance("EUR"));
         accountList.add(accountItem3);
 
         Account accountItem4 = createAccount("5e6f7c1d3a8b49h2k0j7m4n9", "HU73-0472-9861-1757-7419",
-                "Anna Kiss", BigDecimal.valueOf(8927382), Currency.getInstance("HUF"));
+                "Ryan Gosling", BigDecimal.valueOf(8927382), Currency.getInstance("HUF"));
         accountList.add(accountItem4);
 
         return accountList;
