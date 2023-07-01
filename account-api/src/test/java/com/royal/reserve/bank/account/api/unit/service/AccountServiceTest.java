@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ class AccountServiceTest {
 
     @InjectMocks
     private AccountService accountService;
+
+    @Mock
+    private RedisTemplate<String, List<AccountResponse>> redisTemplate;
 
     /**
      * Test for the {@link AccountService#createAccount(AccountRequest)} method.
@@ -69,6 +74,7 @@ class AccountServiceTest {
      * Test for the {@link AccountService#getAllAccounts()} method.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void testGetAllAccounts() {
         // Given
         Account account1 = createAccount("MT23-3821-4829-3279-9231",
@@ -80,6 +86,7 @@ class AccountServiceTest {
         accounts.add(account2);
 
         when(accountRepository.findAll()).thenReturn(accounts);
+        when(redisTemplate.opsForValue()).thenReturn(mock(ValueOperations.class));
 
         // When
         List<AccountResponse> accountResponses = accountService.getAllAccounts();

@@ -153,6 +153,12 @@ services:
       - transaction-api
       - notification-api
 
+  redis:
+    image: redis:7.0.11
+    container_name: redis
+    ports:
+      - "6379:6379"
+
   transaction-api:
     container_name: transaction-api
     image: 0145136798/transaction-api

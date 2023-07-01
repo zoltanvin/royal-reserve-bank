@@ -5,6 +5,7 @@ import com.royal.reserve.bank.asset.management.api.repository.AssetManagementRep
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class AssetManagementService {
      */
     @Transactional(readOnly = true)
     @SneakyThrows
+    @Cacheable("assetAvailability")
     public List<AssetManagementResponse> isAssetAvailable(List<String> assetCode) {
         log.info("Checking asset availability");
         return assetManagementRepository.findByAssetCodeIn(assetCode).stream()

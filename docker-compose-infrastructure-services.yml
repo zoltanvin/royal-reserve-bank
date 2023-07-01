@@ -44,6 +44,12 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@notification-api-kafka:29093
 
+  redis:
+    image: redis:7.0.11
+    container_name: redis
+    ports:
+      - "6379:6379"
+
   transaction-api-postgres:
     image: postgres:15.2
     container_name: transaction-api-postgres
