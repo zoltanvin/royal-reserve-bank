@@ -6,6 +6,7 @@ import com.royal.reserve.bank.account.api.dto.AccountResponse;
 import com.royal.reserve.bank.account.api.dto.AccountRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,6 +20,10 @@ import java.util.*;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+
+    private final RedisTemplate<String, List<AccountResponse>> redisTemplate;
+
+    private static final String CACHE_KEY = "accounts";
 
     private static final Random random = new Random();
 
@@ -36,6 +41,7 @@ public class AccountService {
                 .build();
 
         accountRepository.save(account);
+        redisTemplate.delete(CACHE_KEY);
         log.info("Account for {} is created", account.getAccountHolderName());
     }
 
@@ -63,9 +69,19 @@ public class AccountService {
      * @return A list of AccountResponse objects representing the bank accounts.
      */
     public List<AccountResponse> getAllAccounts() {
-        List<Account> accounts = accountRepository.findAll();
+        List<AccountResponse> cachedAccounts = redisTemplate.opsForValue().get(CACHE_KEY);
 
-        return accounts.stream().map(this::mapToAccountResponse).toList();
+        if (cachedAccounts != null) {
+            return cachedAccounts;
+        } else {
+            List<Account> accounts = accountRepository.findAll();
+
+            List<AccountResponse> accountResponses = accounts.stream()
+                    .map(this::mapToAccountResponse)
+                    .toList();
+            redisTemplate.opsForValue().set(CACHE_KEY, accountResponses);
+            return accountResponses;
+        }
     }
 
     /**
@@ -93,16 +109,13 @@ public class AccountService {
     public void deleteAccountByAccountHolderName(String name) {
         List<Account> accounts = accountRepository.findAll();
 
-        Optional<Account> accountToDelete = Optional.empty();
-        for (Account a : accounts) {
-            if (a.getAccountHolderName() != null && a.getAccountHolderName().equals(name)) {
-                accountToDelete = Optional.of(a);
-                break;
-            }
-        }
+        Optional<Account> accountToDelete = accounts.stream()
+                .filter(a -> a.getAccountHolderName() != null &&
+                        a.getAccountHolderName().equals(name)).findFirst();
 
         if (accountToDelete.isPresent()) {
             accountRepository.delete(accountToDelete.get());
+            redisTemplate.delete(CACHE_KEY);
         } else {
             throw new NoSuchElementException("The bank account information for "
                     + name + " was not found.");

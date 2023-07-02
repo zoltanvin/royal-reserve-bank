@@ -9,6 +9,8 @@ import com.royal.reserve.bank.transaction.api.model.Transaction;
 import com.royal.reserve.bank.transaction.api.model.TransactionItems;
 import com.royal.reserve.bank.transaction.api.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,7 @@ public class TransactionService {
      *@return A string message indicating the result of the transaction processing.
      *@throws IllegalArgumentException If any of the requested assets are not available.
      */
+    @CacheEvict(value = "assetAvailability", allEntries = true)
     public String processTransaction(TransactionRequest transactionRequest) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(UUID.randomUUID().toString());
@@ -50,9 +53,7 @@ public class TransactionService {
                 .map(TransactionItems::getAssetCode)
                 .toList();
 
-        boolean assetIsAvailable = assetManagementClient.checkAssetAvailability(assetCodes)
-                .stream()
-                .allMatch(AssetManagementResponse::isAssetAvailable);
+        boolean assetIsAvailable = checkAssetAvailability(assetCodes);
 
         if (assetIsAvailable) {
             transactionRepository.save(transaction);
@@ -61,6 +62,19 @@ public class TransactionService {
         } else {
             throw new IllegalArgumentException("Asset is not available, please try again later");
         }
+    }
+
+    /**
+     * Checks the availability of assets.
+     *
+     * @param assetCodes The list of asset codes to check.
+     * @return true if all assets are available, false otherwise.
+     */
+    @Cacheable("assetAvailability")
+    public boolean checkAssetAvailability(List<String> assetCodes) {
+        return assetManagementClient.checkAssetAvailability(assetCodes)
+                .stream()
+                .allMatch(AssetManagementResponse::isAssetAvailable);
     }
 
     /**
