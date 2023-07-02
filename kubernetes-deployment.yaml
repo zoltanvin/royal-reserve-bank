@@ -1,0 +1,885 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: account-api-mongo
+  name: account-api-mongo
+spec:
+  ports:
+    - name: "27017"
+      port: 27017
+      targetPort: 27017
+  selector:
+    io.kompose.service: account-api-mongo
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.kompose.service: api-gateway
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: asset-management-api-mysql
+  name: asset-management-api-mysql
+spec:
+  ports:
+    - name: "3306"
+      port: 3306
+      targetPort: 3306
+  selector:
+    io.kompose.service: asset-management-api-mysql
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: config-server
+  name: config-server
+spec:
+  ports:
+    - name: "8888"
+      port: 8888
+      targetPort: 8888
+  selector:
+    io.kompose.service: config-server
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: discovery-server
+  name: discovery-server
+spec:
+  ports:
+    - name: "8761"
+      port: 8761
+      targetPort: 8761
+  selector:
+    io.kompose.service: discovery-server
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: grafana
+  name: grafana
+spec:
+  ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
+  selector:
+    io.kompose.service: grafana
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: notification-api-kafka
+  name: notification-api-kafka
+spec:
+  ports:
+    - name: "9092"
+      port: 9092
+      targetPort: 9092
+  selector:
+    io.kompose.service: notification-api-kafka
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: prometheus
+  name: prometheus
+spec:
+  ports:
+    - name: "9090"
+      port: 9090
+      targetPort: 9090
+  selector:
+    io.kompose.service: prometheus
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  ports:
+    - name: "6379"
+      port: 6379
+      targetPort: 6379
+  selector:
+    io.kompose.service: redis
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: transaction-api-postgres
+  name: transaction-api-postgres
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: transaction-api-postgres
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: zipkin
+  name: zipkin
+spec:
+  ports:
+    - name: "9411"
+      port: 9411
+      targetPort: 9411
+  selector:
+    io.kompose.service: zipkin
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: account-api
+  name: account-api
+spec:
+  containers:
+    - env:
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/account-api
+      name: account-api
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: royal-reserve-bank-default
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              io.kompose.network/royal-reserve-bank-default: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/royal-reserve-bank-default: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: account-api-mongo
+  name: account-api-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: account-api-mongo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: account-api-mongo
+    spec:
+      containers:
+        - image: mongo:6.0.5
+          name: account-api-mongo
+          ports:
+            - containerPort: 27017
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/mongo
+              name: account-api-mongo-claim0
+      restartPolicy: Always
+      volumes:
+        - name: account-api-mongo-claim0
+          persistentVolumeClaim:
+            claimName: account-api-mongo-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: account-api-mongo-claim0
+  name: account-api-mongo-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  containers:
+    - env:
+        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+          value: TRACE
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/api-gateway
+      name: api-gateway
+      ports:
+        - containerPort: 8080
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: asset-management-api
+  name: asset-management-api
+spec:
+  containers:
+    - env:
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/asset-management-api
+      name: asset-management-api
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: asset-management-api-mysql
+  name: asset-management-api-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: asset-management-api-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: asset-management-api-mysql
+    spec:
+      containers:
+        - args:
+            - --default-authentication-plugin=mysql_native_password
+          env:
+            - name: MYSQL_DATABASE
+              value: mysql
+            - name: MYSQL_PASSWORD
+              value: pwd
+            - name: MYSQL_ROOT_PASSWORD
+              value: pwd
+            - name: MYSQL_USER
+              value: admin
+          image: mysql:8.0.33
+          name: asset-management-api-mysql
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/mysql
+              name: asset-management-api-mysql-claim0
+      restartPolicy: Always
+      volumes:
+        - name: asset-management-api-mysql-claim0
+          persistentVolumeClaim:
+            claimName: asset-management-api-mysql-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: asset-management-api-mysql-claim0
+  name: asset-management-api-mysql-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: config-server
+  name: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: config-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: config-server
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: docker
+          image: 0145136798/config-server
+          name: config-server
+          ports:
+            - containerPort: 8888
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/resources/config-files
+              name: config-server-claim0
+      restartPolicy: Always
+      volumes:
+        - name: config-server-claim0
+          persistentVolumeClaim:
+            claimName: config-server-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: config-server-claim0
+  name: config-server-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: discovery-server
+  name: discovery-server
+spec:
+  containers:
+    - env:
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/discovery-server
+      name: discovery-server
+      ports:
+        - containerPort: 8761
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: grafana
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: grafana
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: grafana
+    spec:
+      containers:
+        - env:
+            - name: gf_security_admin_password
+              value: password
+            - name: gf_security_admin_user
+              value: admin
+          image: grafana/grafana:10.0.1
+          name: grafana
+          ports:
+            - containerPort: 3000
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-claim0
+      restartPolicy: Always
+      volumes:
+        - name: grafana-claim0
+          persistentVolumeClaim:
+            claimName: grafana-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: grafana-claim0
+  name: grafana-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: notification-api
+  name: notification-api
+spec:
+  containers:
+    - env:
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/notification-api
+      name: notification-api
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: notification-api-kafka
+  name: notification-api-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: notification-api-kafka
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: notification-api-kafka
+    spec:
+      containers:
+        - env:
+            - name: CLUSTER_ID
+              value: MkU3OEVANTcwNTJENDM2Qk
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://notification-api-kafka:29092,HOST://localhost:9092
+            - name: KAFKA_CONTROLLER_LISTENER_NAMES
+              value: CONTROLLER
+            - name: KAFKA_CONTROLLER_QUORUM_VOTERS
+              value: 1@notification-api-kafka:29093
+            - name: KAFKA_LISTENERS
+              value: PLAINTEXT://notification-api-kafka:29092,CONTROLLER://notification-api-kafka:29093,HOST://0.0.0.0:9092
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,HOST:PLAINTEXT
+            - name: KAFKA_NODE_ID
+              value: "1"
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_PROCESS_ROLES
+              value: broker,controller
+            - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: "1"
+          image: confluentinc/cp-kafka:7.4.0
+          name: notification-api-kafka
+          ports:
+            - containerPort: 9092
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: prometheus
+  name: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: prometheus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: prometheus
+    spec:
+      containers:
+        - image: prom/prometheus:v2.43.0
+          name: prometheus
+          ports:
+            - containerPort: 9090
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/prometheus/prometheus.yml
+              name: prometheus-claim0
+              subPath: prometheus-configuration.yml
+      restartPolicy: Always
+      volumes:
+        - name: prometheus-claim0
+          persistentVolumeClaim:
+            claimName: prometheus-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: prometheus-claim0
+  name: prometheus-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: redis
+    spec:
+      containers:
+        - image: redis:7.0.11
+          name: redis
+          ports:
+            - containerPort: 6379
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/royal-reserve-bank-default: "true"
+    io.kompose.service: transaction-api
+  name: transaction-api
+spec:
+  containers:
+    - env:
+        - name: spring.cloud.config.uri
+          value: http://config-server:8888/config-server
+        - name: spring.profiles.active
+          value: docker
+      image: 0145136798/transaction-api
+      name: transaction-api
+      resources: {}
+  restartPolicy: OnFailure
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: transaction-api-postgres
+  name: transaction-api-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: transaction-api-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: transaction-api-postgres
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: root
+          image: postgres:15.2
+          name: transaction-api-postgres
+          ports:
+            - containerPort: 5432
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/postgres
+              name: transaction-api-postgres-claim0
+      restartPolicy: Always
+      volumes:
+        - name: transaction-api-postgres-claim0
+          persistentVolumeClaim:
+            claimName: transaction-api-postgres-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: transaction-api-postgres-claim0
+  name: transaction-api-postgres-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: zipkin
+  name: zipkin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: zipkin
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+            kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/royal-reserve-bank-default: "true"
+        io.kompose.service: zipkin
+    spec:
+      containers:
+        - image: openzipkin/zipkin:2.24.0
+          name: zipkin
+          ports:
+            - containerPort: 9411
+          resources: {}
+      restartPolicy: Always
+status: {}
