@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.royal.reserve.bank.account.api.dto.AccountResponse;
 import com.royal.reserve.bank.account.api.serializer.CustomBigDecimalRedisSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -20,6 +21,11 @@ import java.util.List;
  */
 @Configuration
 public class RedisConfig {
+    @Value("${spring.data.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.data.redis.port}")
+    private int redisPort;
 
     /**
      * Creates a Redis template for storing and retrieving account responses.
@@ -69,8 +75,8 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName("localhost");
-        redisConfig.setPort(6379);
+        redisConfig.setHostName(redisHost);
+        redisConfig.setPort(redisPort);
 
         LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(redisConfig);
         connectionFactory.afterPropertiesSet();
