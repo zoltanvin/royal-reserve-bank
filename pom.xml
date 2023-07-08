@@ -16,8 +16,6 @@
     <version>1.0</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
         <testcontainers-bom.version>1.18.0</testcontainers-bom.version>
         <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>

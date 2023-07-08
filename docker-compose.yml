@@ -97,7 +97,7 @@ services:
     restart: on-failure
 
   grafana:
-    image: grafana/grafana:9.5.1
+    image: grafana/grafana:10.0.1
     container_name: grafana
     ports:
       - "3000:3000"
@@ -158,6 +158,10 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    depends_on:
+      - account-api
+      - asset-management-api
+      - transaction-api
 
   transaction-api:
     container_name: transaction-api
