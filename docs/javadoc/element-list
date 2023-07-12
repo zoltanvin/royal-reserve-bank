@@ -1,8 +1,10 @@
 com.royal.reserve.bank.account.api
+com.royal.reserve.bank.account.api.config
 com.royal.reserve.bank.account.api.controller
 com.royal.reserve.bank.account.api.dto
 com.royal.reserve.bank.account.api.model
 com.royal.reserve.bank.account.api.repository
+com.royal.reserve.bank.account.api.serializer
 com.royal.reserve.bank.account.api.service
 com.royal.reserve.bank.account.api.util
 com.royal.reserve.bank.api.gateway

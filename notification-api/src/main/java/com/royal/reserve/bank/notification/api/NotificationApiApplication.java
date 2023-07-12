@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 
+/**
+ * Main class for the Notification Api.
+ */
 @SpringBootApplication
 @Slf4j
 public class NotificationApiApplication {
