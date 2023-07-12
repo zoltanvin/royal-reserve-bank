@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.royal.reserve.bank.account.api.dto.AccountResponse;
 import com.royal.reserve.bank.account.api.serializer.CustomBigDecimalRedisSerializer;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +21,11 @@ import java.util.List;
 /**
  * Configuration class for Redis.
  */
+@Getter
+@Setter
 @Configuration
 public class RedisConfig {
+
     @Value("${spring.data.redis.host}")
     private String redisHost;
 
@@ -74,11 +79,11 @@ public class RedisConfig {
      */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName(redisHost);
-        redisConfig.setPort(redisPort);
+        RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
+        standaloneConfiguration.setHostName(redisHost);
+        standaloneConfiguration.setPort(redisPort);
 
-        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(redisConfig);
+        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(standaloneConfiguration);
         connectionFactory.afterPropertiesSet();
 
         return connectionFactory;

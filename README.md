@@ -11,7 +11,7 @@
     <h1>Table of Contents 🡇</h1>
   </summary>
 
-<img align="right" src="./docs/readme-assets/building-icon.png" width="405">
+<img align="right" src="./docs/readme-assets/building-icon.png" width="413">
 
    * [About](#about-)
    * [Solution Architecture](#solution-architecture-)
@@ -45,8 +45,16 @@ It consists of several independent modules that work together to provide a scala
 # Solution Architecture 🔍
 
 The Royal Reserve Bank project is designed using a microservices architecture, which structures the application as a collection of loosely coupled services. Each service represents a specific business capability and can be developed and scaled independently.
-<!--  -->
-![image](./docs/readme-assets/high-level-architecture.png)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/high-level-architecture-dark.png">
+  <img src="./docs/readme-assets/high-level-architecture.png">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/high-level-architecture-legend-dark.png">
+  <img src="./docs/readme-assets/high-level-architecture-legend.png">
+</picture>
 
 ## Architecture Patterns
 
@@ -64,7 +72,7 @@ The key architectural patterns used in the project include:
 <!--  -->
 - **Cache-aside Pattern:** Caching plays a crucial role in enhancing performance and reducing database load in microservices architecture. The Account API utilizes Redis template, while the Asset and Transaction API leverage Spring Cache. When a request requires data, the microservice first checks the cache. If the data is available, it is retrieved from the cache, avoiding the need to fetch it from the database. This caching strategy efficiently reduces response times and enhances the overall performance of the system.
 <!--  -->
-- **Circuit Breaker Pattern:** The Circuit Breaker pattern is used to handle faults and failures in distributed systems. It acts as a safeguard to prevent cascading failures when a microservice is unavailable or experiencing high latency. The Circuit Breaker is implemented using resilience4j library in the Transaction API. If it detects failures or slow responses, it "opens the circuit" and redirects subsequent requests to a fallback mechanism or returns an error response directly. This helps to protect the overall system from overloading and allows it to gracefully degrade when dependencies are unavailable.
+- **Circuit Breaker Pattern:** The Circuit Breaker pattern is used to handle faults and failures in distributed systems. It acts as a safeguard to prevent cascading failures when a microservice is unavailable or experiencing high latency. The Circuit Breaker is implemented using Resilience4J library in the Transaction API. If it detects failures or slow responses, it "opens the circuit" and redirects subsequent requests to a fallback mechanism or returns an error response directly. This helps to protect the overall system from overloading and allows it to gracefully degrade when dependencies are unavailable.
 <!-- - **Centralized Logging:** In a microservices architecture, it's crucial to have a centralized logging system to collect and analyze logs from various microservices. Centralized logging enables easy monitoring, troubleshooting, and analysis of the system's behavior. The microservices in the Royal Reserve Bank project send their logs to ELK platforms (Elasticsearch, Logstash, and Kibana). These platforms allow developers and operations teams to search, filter, and visualize logs, making it easier to detect and diagnose issues, track system performance, and ensure compliance with security and operational requirements. -->
 - **Security Pattern:** The Royal Reserve Bank project incorporates security measures throughout the architecture. The API Gateway handles authentication and authorization, ensuring that only authenticated and authorized requests reach the microservices. The microservices themselves follow secure coding practices and implement appropriate security controls, such as input validation, encryption of sensitive data, and protection against common vulnerabilities.
 <!--  -->
@@ -91,7 +99,7 @@ The key architectural patterns used in the project include:
 ### To build the applications:
 
 - Start the config-server application.
-- Start Redis using Docker Compose by running the command `docker-compose -f docker-compose-infrastructure-services.yml up -d redis`.
+- Start the supporting services in Docker using Docker Compose by running the command `docker-compose docker-compose-infrastructure-services.yml up -d`.
 - Open a terminal or command prompt and navigate to the project's root directory.
 - Run the command `mvn clean install -pl !config-server` to build all the applications.
 - To build a specific application, run the command `mvn clean install -pl <module-name>`. For example, to build the Account API, run the command `mvn clean install -pl account-api`.
@@ -100,7 +108,7 @@ The key architectural patterns used in the project include:
 
 - Ensure that you have Java 17, Maven, and a compatible IDE (such as [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) or [Eclipse](https://www.eclipse.org/downloads/)) installed and properly configured.
 - Clone the repository and navigate to the project directory.
-- Start only the supporting services in Docker using Docker Compose by running the command `docker-compose docker-compose-infrastructure-services.yml up -d`.
+- Start the supporting services in Docker using Docker Compose by running the command `docker-compose docker-compose-infrastructure-services.yml up -d`.
 - To launch the applications, run each application in its respective module. Note that the config-server module should be started first.
 
 ### To run the microservices within Docker:
@@ -150,7 +158,10 @@ The Reserve Bank API documentation provides detailed information about the avail
 <!-- -->
 To access the full API documentation, navigate to the root directory and execute the command `mvn javadoc:aggregate`. The generated Javadoc will be available in the target/site/apidocs folder. For convenience, I have exported the documentation to the [javadoc folder](./docs/javadoc) in the docs/ directory.
 
-![image](./docs/readme-assets/api-documentation.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/api-documentation-dark.png">
+  <img src="./docs/readme-assets/api-documentation.png">
+</picture>
 
 <!-- add section about swagger doc here -->
 
@@ -181,7 +192,10 @@ To perform manual testing using Postman, follow these steps:
 - Click the "Send" button to execute the request and observe the response.
 - Analyze the response data and verify that it matches the expected behavior.
 
-![image](./docs/readme-assets/manual-testing-with-postman.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/manual-testing-with-postman-dark.png">
+  <img src="./docs/readme-assets/manual-testing-with-postman.png">
+</picture>
 
 Remember to ensure that the Royal Reserve Bank microservices are running before executing the requests in Postman to ensure successful communication with the APIs.
 
@@ -199,7 +213,10 @@ The project uses Prometheus and Grafana for monitoring and logging the microserv
 - The "Alerts" tab displays any alerts that have been triggered based on the metrics.
 - You can also use the "Graph" tab to view the metrics in the form of graphs.
 
-![image](./docs/readme-assets/prometheus-metrics.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/prometheus-metrics-dark.png">
+  <img src="./docs/readme-assets/prometheus-metrics.png">
+</picture>
 
 ### Grafana
 
@@ -220,7 +237,10 @@ To set up Grafana with Prometheus as the data source and configure a dashboard u
 - Review the imported dashboard and make any necessary modifications or adjustments.
 - You can now view and interact with the imported dashboard, which will display the metrics and visualizations based on the Prometheus data source.
 
-![image](./docs/readme-assets/grafana-dashboard.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/readme-assets/grafana-dashboard-dark.png">
+  <img src="./docs/readme-assets/grafana-dashboard.png">
+</picture>
 
 <!--
 # Deployment
