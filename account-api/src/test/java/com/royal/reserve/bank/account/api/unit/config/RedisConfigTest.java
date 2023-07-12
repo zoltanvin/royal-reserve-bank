@@ -85,16 +85,4 @@ class RedisConfigTest {
         assertEquals(redisHost, actualHost);
         assertEquals(redisPort, actualPort);
     }
-
-/*    @Test
-    void testRedisConnectionFactory() {
-        // Given
-        RedisConnectionFactory redisConnectionFactory = redisConfig.redisConnectionFactory();
-        LettuceConnectionFactory lettuceConnectionFactory = (LettuceConnectionFactory) redisConnectionFactory;
-        RedisStandaloneConfiguration redisConfig = lettuceConnectionFactory.getStandaloneConfiguration();
-
-        // When and Then
-        assertEquals("localhost", redisConfig.getHostName());
-        assertEquals(6379, redisConfig.getPort());
-    }*/
 }
