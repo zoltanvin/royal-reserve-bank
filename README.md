@@ -28,12 +28,6 @@
    * [Contributing](#contributing-)
    * [License](#license-)
    * [Troubleshooting and Support](#troubleshooting-and-support-)
-<!--  * [Build](#to-build-the-applications)
-      * [Run from Local Environment](#to-run-the-microservices-in-your-local-environment)
-      * [Run from Docker](#to-run-the-microservices-within-docker)
-      * [Run from Kubernetes](#running-the-microservices-in-kubernetes-on-your-local-machine)
-      * [Architecture Patterns](#architecture-patterns)
- -->
 </details>
 
 # About 🚀
