@@ -23,6 +23,7 @@
         <java-jwt.version>4.4.0</java-jwt.version>
         <jwks-rsa.version>0.22.0</jwks-rsa.version>
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <swagger.version>2.1.0</swagger.version>
     </properties>
 
     <modules>
@@ -89,6 +90,11 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>jwks-rsa</artifactId>
                 <version>${jwks-rsa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

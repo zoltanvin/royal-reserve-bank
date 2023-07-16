@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .and()
                 .and()
                 .authorizeExchange(exchange ->
-                        exchange.pathMatchers("/eureka/**", "/discovery-server/**")
+                        exchange.pathMatchers("/eureka/**", "/discovery-server/**", "swagger-ui/**")
                                 .permitAll()
                                 .anyExchange()
                                 .authenticated());
