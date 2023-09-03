@@ -28,12 +28,6 @@
    * [Contributing](#contributing-)
    * [License](#license-)
    * [Troubleshooting and Support](#troubleshooting-and-support-)
-<!--  * [Build](#to-build-the-applications)
-      * [Run from Local Environment](#to-run-the-microservices-in-your-local-environment)
-      * [Run from Docker](#to-run-the-microservices-within-docker)
-      * [Run from Kubernetes](#running-the-microservices-in-kubernetes-on-your-local-machine)
-      * [Architecture Patterns](#architecture-patterns)
- -->
 </details>
 
 # About 🚀
@@ -73,10 +67,10 @@ The key architectural patterns used in the project include:
 - **Cache-aside Pattern:** Caching plays a crucial role in enhancing performance and reducing database load in microservices architecture. The Account API utilizes Redis template, while the Asset and Transaction API leverage Spring Cache. When a request requires data, the microservice first checks the cache. If the data is available, it is retrieved from the cache, avoiding the need to fetch it from the database. This caching strategy efficiently reduces response times and enhances the overall performance of the system.
 <!--  -->
 - **Circuit Breaker Pattern:** The Circuit Breaker pattern is used to handle faults and failures in distributed systems. It acts as a safeguard to prevent cascading failures when a microservice is unavailable or experiencing high latency. The Circuit Breaker is implemented using Resilience4J library in the Transaction API. If it detects failures or slow responses, it "opens the circuit" and redirects subsequent requests to a fallback mechanism or returns an error response directly. This helps to protect the overall system from overloading and allows it to gracefully degrade when dependencies are unavailable.
-<!-- - **Centralized Logging:** In a microservices architecture, it's crucial to have a centralized logging system to collect and analyze logs from various microservices. Centralized logging enables easy monitoring, troubleshooting, and analysis of the system's behavior. The microservices in the Royal Reserve Bank project send their logs to ELK platforms (Elasticsearch, Logstash, and Kibana). These platforms allow developers and operations teams to search, filter, and visualize logs, making it easier to detect and diagnose issues, track system performance, and ensure compliance with security and operational requirements. -->
+<!--  -->
 - **Security Pattern:** The Royal Reserve Bank project incorporates security measures throughout the architecture. The API Gateway handles authentication and authorization, ensuring that only authenticated and authorized requests reach the microservices. The microservices themselves follow secure coding practices and implement appropriate security controls, such as input validation, encryption of sensitive data, and protection against common vulnerabilities.
 <!--  -->
-- **Containerization and Orchestration:** The microservices are containerized using Docker, allowing them to run in isolated environments with their dependencies. Containerization provides consistency in deploying microservices across different environments. The containerized microservices are then orchestrated using a container orchestration platform called Kubernetes. Kubernetes manages the deployment, scaling, and monitoring of the microservices, ensuring high availability and fault tolerance.
+- **Containerization and Orchestration:** The microservices are containerized using Docker, allowing them to run in isolated environments with their dependencies. Containerization provides consistency in deploying microservices across different environments.
 
 # Microservices 📋
 
@@ -117,15 +111,6 @@ The key architectural patterns used in the project include:
 - Start the microservices using Docker Compose by running the command `docker-compose up -d`.
 - To stop the microservices, run the command `docker-compose down`.
 
-### To run the microservices in Kubernetes on your local machine:
-
-- Ensure that you have Minikube and kubectl installed and properly configured.
-- Start Minikube cluster by running the command `minikube start`.
-- Apply the Kubernetes deployment configuration by running the command `kubectl apply -f kubernetes-deployment.yaml`.
-- Monitor the deployment by running the command `kubectl get pods`. Once all the pods are in the "Running" state, the application is successfully deployed.
-- To stop the application, run the command `kubectl delete -f kubernetes-deployment.yaml`.
-- To stop Minikube, run the command `minikube stop`.
-
 # Technologies Used 💡
 
 The Royal Reserve Bank project utilizes the following technologies and frameworks:
@@ -134,7 +119,6 @@ The Royal Reserve Bank project utilizes the following technologies and framework
 - **Spring Boot:** for simplifying the development and deployment of microservices by using pre-configured templates and tools.
 - **Spring Cloud:** for implementing microservices architectural patterns, such as service discovery, configuration management, and circuit breakers.
 - **Docker:** for containerization of microservices, making it easy to package and deploy the microservices across different environments.
-- **Kubernetes:** for container orchestration in the microservices, allowing to deploy and manage the microservices across different environments.
 - **API Gateway:** for managing and routing API requests from users to different microservices and providing a unified entry point.
 - **JPA:** for implementing the Object Relational Mapping in the microservices, allowing Java applications to interact with databases and perform CRUD.
 - **MongoDB:** for storing account data in the Account API allowing flexibility and scalability in handling large amounts of unstructured data.
@@ -163,8 +147,6 @@ To access the full API documentation, navigate to the root directory and execute
   <img src="./docs/readme-assets/api-documentation.png">
 </picture>
 
-<!-- add section about swagger doc here -->
-
 # Testing ✅
 
 The project includes comprehensive unit tests and integration tests for each microservice. Additionally, you can use Postman to interact with the Royal Reserve Bank APIs and perform manual testing. The project provides a Postman collection and environment file for easy import and configuration.
@@ -175,7 +157,7 @@ To run the tests, follow these steps:
 
 - Start the config-server application.
 - Open a terminal or command prompt and navigate to the project's root directory.
-- To run all the unit tests, use the command `mvn test`.
+- To run all tests, use the command `mvn test`.
 - If you specifically want to run the integration tests, use the command `mvn failsafe:integration-test`.
 - Alternatively, if you prefer to run only the unit tests, use the command `mvn test -Dgroups="!integration"`.
 
@@ -242,16 +224,6 @@ To set up Grafana with Prometheus as the data source and configure a dashboard u
   <img src="./docs/readme-assets/grafana-dashboard.png">
 </picture>
 
-<!--
-# Deployment
-
-The project can be deployed to various environments such as development, staging, and production. Please refer to the individual module directories for instructions on deploying each microservice.
-
-# Continuous Integration/Deployment
-
-The project uses a CI/CD pipeline configured with Jenkins. Any changes pushed to the main branch trigger an automatic build and deployment process to the staging environment. The CI/CD configuration details can be found in the Jenkinsfile in the project root directory.
- -->
-
 # Contributing 🤝
 
 Contributions to the Reserve Bank project are welcome! If you encounter any bugs, have feature ideas, or would like to contribute code, please feel free to submit a pull request. Your valuable contributions are highly appreciated. Please make sure to follow the standard pull request guidelines. Thank you!
@@ -267,6 +239,3 @@ I'm here to help! If you have any questions, feedback, or need assistance, pleas
 <p>
 
 ⭐ **Star me on GitHub — it helps!**
-<!--
-mvn clean compile jib:build && docker-compose down && docker-compose pull && docker compose up -d
- -->
