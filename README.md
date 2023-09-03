@@ -156,6 +156,8 @@ To access the full API documentation, navigate to the root directory and execute
   <img src="./docs/readme-assets/api-documentation.png">
 </picture>
 
+<!-- add section about swagger doc here -->
+
 # Testing ✅
 
 The project includes comprehensive unit tests and integration tests for each microservice. Additionally, you can use Postman to interact with the Royal Reserve Bank APIs and perform manual testing. The project provides a Postman collection and environment file for easy import and configuration.
