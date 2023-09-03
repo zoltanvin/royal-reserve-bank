@@ -1,0 +1,121 @@
+http://server:port/context-path/swagger-ui.html 
+OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
+
+prop: springdoc.api-docs.path  default: /v3/api-docs
+
+http://localhost:8081/swagger-ui.html
+http://localhost:8080/swagger-ui.html
+
+
+
+
+
+Kubernetes
+AWS
+Jenkins
+arhitecture map
+
+Swagger https://springdoc.org/#Introduction
+ELK
+SonarQube
+
+script for demo & postman & readme & resume refinement with GPT
+demo video drag and drop to the readme
+
+Demo
+hide ai stuff
+architecture
+how to run
+docker
+config server
+discovery server
+circuit breaker
+controller class preview
+unit testing -  preview one class
+integration testing - preview one class
+code coverage- if no SonarQube use built in
+postman
+zipkin
+grafana
+kafka
+javadoc
+
+
+promoting
+http://www.echojs.com
+https://www.reddit.com/r/webdev/
+https://www.reddit.com/r/java/
+https://www.reddit.com/r/javascript/
+https://news.ycombinator.com/show
+https://lobste.rs
+https://dev.to/t/javascript
+https://betapage.co
+https://www.producthunt.com/ 
+https://thetechladder.com/
+https://gitter.im/andrewtelnov/surveyjs 
+https://gitter.im/chat-rooms/reactjs
+https://gitter.im/FreeCodeCamp/FreeCodeCamp
+https://news.ycombinator.com/show
+https://www.producthunt.com/posts/tooljet?ref=blog.tooljet.com
+https://goodfirstissue.dev/
+discord
+
+Title: 🚀 Introducing the Royal Reserve Bank: Cutting-Edge Microservices Architecture with Spring Boot and Docker
+
+Hey fellow devs! 👋 I'm thrilled to share with you the cutting-edge Royal Reserve Bank, a digital banking solution built on a state-of-the-art microservices architecture. 💻
+
+With a passion for innovation and scalability, we've leveraged the power of Spring Boot and Spring Cloud technologies to create a robust and fault-tolerant system. 🌟
+
+🔍 Discover the Architecture: The Royal Reserve Bank embraces the best practices of microservices, employing service discovery, centralized configuration, distributed tracing, circuit breakers, cache-aside, and event-driven architecture. Check out the high-level architecture diagram here!
+
+📋 Microservices Galore: The Royal Reserve Bank is divided into several independent modules, each with its specific business capability. From account management to asset handling and transaction processing, our microservices communicate seamlessly through well-defined APIs. 🔄
+
+🔒 Security at its Core: Security is paramount in the Royal Reserve Bank. We've implemented authentication and authorization using the API Gateway, ensuring only authorized requests reach the microservices. Plus, we follow secure coding practices to protect against vulnerabilities and safeguard sensitive data. 🛡️
+
+⚙️ Configuration Made Easy: Say goodbye to configuration headaches! Our Config Server centralizes configuration management, making it a breeze to update settings without restarting services. It supports environment-specific configurations, ensuring flexibility and scalability.
+
+🔨 Clone, Build, and Use: Want to get your hands dirty? We've got you covered. Follow the simple steps in our documentation to clone, build, and run the Royal Reserve Bank in either Docker or your local environment. Let the magic unfold! 🚀
+
+💡 Cutting-Edge Technologies: Brace yourself for a tech stack extravaganza! Java 17, Spring Boot, Spring Cloud, Docker, API Gateway, JPA, MongoDB, PostgreSQL, MySQL, Kafka, Auth0, Grafana, Zipkin, Redis – these are just a few of the exciting technologies we've employed. For the full list, dive into our documentation.
+
+📚 API Documentation: Explore our comprehensive API documentation, complete with endpoints, request/response formats, and authentication requirements. It's generated from the source code, ensuring accuracy and ease of use. Find it here.
+
+✅ Testing Excellence: Quality is our top priority! The Royal Reserve Bank comes with comprehensive unit tests and integration tests, ensuring reliability and stability. We've even prepared a Postman collection for manual testing – making it a breeze to interact with our APIs.
+
+Don't miss out on this opportunity to dive into the world of microservices and witness the Royal Reserve Bank in action! Join us in revolutionizing the banking industry with our cutting-edge technologies and forward-thinking approach.
+
+🔗 Check out the Royal Reserve Bank on GitHub: github.com/zoltanvin/royal-reserve-bank
+
+Let's reshape banking together! 💪🏽 Feel free to ask questions, share feedback, or contribute to the project. Together, we can achieve greatness. 🌟
+
+#RoyalReserveBank #Microservices #SpringBoot #Docker #Innovation #Fintech #DevCommunity #OpenSource #Coding
+
+
+
+
+🌟 My First Big Project! Months of Hard Work! Your Reviews and Feedbacks are Priceless! 🌟
+
+Hey there, amazing community!
+
+I'm absolutely thrilled to unveil my latest creation, my first big project, which has been my labor of love for the past several months! 🎉 It's been an incredible journey, filled with countless hours of dedication, learning, and growth. Now, I'm excited to share it with all of you and hear your valuable feedback and reviews!
+
+So, without further ado, let me introduce you to [Project Name]. 🚀 This project aims to [briefly describe the purpose or main features of your project]. I poured my heart and soul into every detail, ensuring that it delivers an exceptional user experience and meets the needs of its intended audience.
+
+I must admit, this project pushed me out of my comfort zone and challenged me in ways I never imagined. But it's through these challenges that I've grown both personally and professionally. And now, I'm humbly reaching out to you, my incredible community, to share your thoughts and insights.
+
+I would be immensely grateful for your reviews and feedbacks! Your perspectives will be invaluable in helping me refine and improve [Project Name]. No matter how big or small, your comments and suggestions will guide me on my path to continuous improvement.
+
+This project is more than just lines of code or a collection of features—it's a culmination of my passion, hard work, and unwavering commitment to delivering something exceptional. As a [your profession/passion], this is a significant milestone in my journey, and your support means the world to me.
+
+Oh, and did I mention that I've attached the full documentation for [Project Name] below? Take a deep dive into the intricacies and see firsthand the effort that went into bringing this project to life. I'm eager to hear your thoughts, ideas, and any improvements you may suggest!
+
+[Include a link or attachment to the project documentation]
+
+As a token of my gratitude, I'll be randomly selecting one lucky reviewer from all the feedback I receive, and they'll receive [mention the prize or incentive you're offering]. It's my way of expressing my heartfelt thanks for your engagement and involvement in this exciting journey.
+
+Together, let's make [Project Name] shine even brighter! Your attention, engagement, and clicks will help bring this project to the world, and your support will inspire me to keep creating and innovating.
+
+Thank you from the bottom of my heart for being a part of this remarkable adventure. Your feedback and reviews are invaluable, and I can't wait to hear what you think!
+
+With sincere gratitude,
+[Your Name]

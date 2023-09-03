@@ -28,6 +28,12 @@
    * [Contributing](#contributing-)
    * [License](#license-)
    * [Troubleshooting and Support](#troubleshooting-and-support-)
+<!--  * [Build](#to-build-the-applications)
+      * [Run from Local Environment](#to-run-the-microservices-in-your-local-environment)
+      * [Run from Docker](#to-run-the-microservices-within-docker)
+      * [Run from Kubernetes](#running-the-microservices-in-kubernetes-on-your-local-machine)
+      * [Architecture Patterns](#architecture-patterns)
+ -->
 </details>
 
 # About 🚀
@@ -67,6 +73,7 @@ The key architectural patterns used in the project include:
 - **Cache-aside Pattern:** Caching plays a crucial role in enhancing performance and reducing database load in microservices architecture. The Account API utilizes Redis template, while the Asset and Transaction API leverage Spring Cache. When a request requires data, the microservice first checks the cache. If the data is available, it is retrieved from the cache, avoiding the need to fetch it from the database. This caching strategy efficiently reduces response times and enhances the overall performance of the system.
 <!--  -->
 - **Circuit Breaker Pattern:** The Circuit Breaker pattern is used to handle faults and failures in distributed systems. It acts as a safeguard to prevent cascading failures when a microservice is unavailable or experiencing high latency. The Circuit Breaker is implemented using Resilience4J library in the Transaction API. If it detects failures or slow responses, it "opens the circuit" and redirects subsequent requests to a fallback mechanism or returns an error response directly. This helps to protect the overall system from overloading and allows it to gracefully degrade when dependencies are unavailable.
+<!-- - **Centralized Logging:** In a microservices architecture, it's crucial to have a centralized logging system to collect and analyze logs from various microservices. Centralized logging enables easy monitoring, troubleshooting, and analysis of the system's behavior. The microservices in the Royal Reserve Bank project send their logs to ELK platforms (Elasticsearch, Logstash, and Kibana). These platforms allow developers and operations teams to search, filter, and visualize logs, making it easier to detect and diagnose issues, track system performance, and ensure compliance with security and operational requirements. -->
 <!--  -->
 - **Security Pattern:** The Royal Reserve Bank project incorporates security measures throughout the architecture. The API Gateway handles authentication and authorization, ensuring that only authenticated and authorized requests reach the microservices. The microservices themselves follow secure coding practices and implement appropriate security controls, such as input validation, encryption of sensitive data, and protection against common vulnerabilities.
 <!--  -->
@@ -224,6 +231,16 @@ To set up Grafana with Prometheus as the data source and configure a dashboard u
   <img src="./docs/readme-assets/grafana-dashboard.png">
 </picture>
 
+<!--
+# Deployment
+
+The project can be deployed to various environments such as development, staging, and production. Please refer to the individual module directories for instructions on deploying each microservice.
+
+# Continuous Integration/Deployment
+
+The project uses a CI/CD pipeline configured with Jenkins. Any changes pushed to the main branch trigger an automatic build and deployment process to the staging environment. The CI/CD configuration details can be found in the Jenkinsfile in the project root directory.
+ -->
+
 # Contributing 🤝
 
 Contributions to the Reserve Bank project are welcome! If you encounter any bugs, have feature ideas, or would like to contribute code, please feel free to submit a pull request. Your valuable contributions are highly appreciated. Please make sure to follow the standard pull request guidelines. Thank you!
@@ -239,3 +256,5 @@ I'm here to help! If you have any questions, feedback, or need assistance, pleas
 <p>
 
 ⭐ **Star me on GitHub — it helps!**
+<!--
+mvn clean compile jib:build && docker-compose down && docker-compose pull && docker compose up -d
