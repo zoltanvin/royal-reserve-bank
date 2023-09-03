@@ -71,6 +71,7 @@ The key architectural patterns used in the project include:
 - **Security Pattern:** The Royal Reserve Bank project incorporates security measures throughout the architecture. The API Gateway handles authentication and authorization, ensuring that only authenticated and authorized requests reach the microservices. The microservices themselves follow secure coding practices and implement appropriate security controls, such as input validation, encryption of sensitive data, and protection against common vulnerabilities.
 <!--  -->
 - **Containerization and Orchestration:** The microservices are containerized using Docker, allowing them to run in isolated environments with their dependencies. Containerization provides consistency in deploying microservices across different environments.
+<!-- - **Containerization and Orchestration:** The microservices are containerized using Docker, allowing them to run in isolated environments with their dependencies. Containerization provides consistency in deploying microservices across different environments. The containerized microservices are then orchestrated using a container orchestration platform called Kubernetes. Kubernetes manages the deployment, scaling, and monitoring of the microservices, ensuring high availability and fault tolerance. -->
 
 # Microservices 📋
 
@@ -111,6 +112,17 @@ The key architectural patterns used in the project include:
 - Start the microservices using Docker Compose by running the command `docker-compose up -d`.
 - To stop the microservices, run the command `docker-compose down`.
 
+<!--
+### To run the microservices in Kubernetes on your local machine:
+
+- Ensure that you have Minikube and kubectl installed and properly configured.
+- Start Minikube cluster by running the command `minikube start`.
+- Apply the Kubernetes deployment configuration by running the command `kubectl apply -f kubernetes-deployment.yaml`.
+- Monitor the deployment by running the command `kubectl get pods`. Once all the pods are in the "Running" state, the application is successfully deployed.
+- To stop the application, run the command `kubectl delete -f kubernetes-deployment.yaml`.
+- To stop Minikube, run the command `minikube stop`.
+-->
+
 # Technologies Used 💡
 
 The Royal Reserve Bank project utilizes the following technologies and frameworks:
@@ -119,6 +131,7 @@ The Royal Reserve Bank project utilizes the following technologies and framework
 - **Spring Boot:** for simplifying the development and deployment of microservices by using pre-configured templates and tools.
 - **Spring Cloud:** for implementing microservices architectural patterns, such as service discovery, configuration management, and circuit breakers.
 - **Docker:** for containerization of microservices, making it easy to package and deploy the microservices across different environments.
+<!-- - **Kubernetes:** for container orchestration in the microservices, allowing to deploy and manage the microservices across different environments. -->
 - **API Gateway:** for managing and routing API requests from users to different microservices and providing a unified entry point.
 - **JPA:** for implementing the Object Relational Mapping in the microservices, allowing Java applications to interact with databases and perform CRUD.
 - **MongoDB:** for storing account data in the Account API allowing flexibility and scalability in handling large amounts of unstructured data.
